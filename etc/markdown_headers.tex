@@ -1,0 +1,49 @@
+% Common Hide-From-Pandoc trick
+\newcommand{\hideFromPandoc}[1]{#1}
+\hideFromPandoc{
+	\let\Begin\begin
+	\let\End\end
+}
+
+
+% Code highlighting
+\usepackage{fancyvrb,newverbs,xcolor}
+\usepackage{fvextra}
+ \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+\definecolor{Light}{HTML}{F4F4F4}
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{
+  \colorbox{Light}{\oldtexttt{#1}}
+}
+
+% Set symbols for unordered lists
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\setlist[itemize,1]{label=$\bullet$}
+\setlist[itemize,2]{label=$\circ$}
+\setlist[itemize,3]{label=$\diamond$}
+\setlist[itemize,4]{label=$\circ$}
+
+% math symbols
+\usepackage{rotating}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\divword}{\,div\,}
+\newcommand{\cnst}{cnst.}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\opt}[1]{{#1}\ensuremath{^*}\kern-\scriptspace}
+\newcommand{\prob}{\text{I\kern-0.15em P}} 
+% \DeclareMathOperator*{\prob}{\,Pr} 
+\newcommand{\avg}{\text{I\kern-0.15em E}} 
+\newcommand{\expp}[1]{\exp\left ( #1 \right )}
+% \newcommand{\qed}{\hfill\ensuremath{\square}} 
+\newcommand{\tuple}[1]{\langle #1 \rangle}
+
+% Configure quote blocks
+\usepackage{tcolorbox}
+\newtcolorbox{myquote}{colback=gray!5!white, colframe=gray!75!black}
+\renewenvironment{quote}{\begin{myquote}}{\end{myquote}}
+
+% multiple columns
+\usepackage{multicol}
+\usepackage{wrapfig}
