@@ -27,7 +27,8 @@ wait_x_msec: ; Delay_ms*16000 +2-9+4 + 3 overhead = Delay_ms*16000
 	ldi msl, LOW(Delay_ms) ; 1 cycle
 	ldi msh, HIGH(Delay_ms) ; 1 cycle
 delay1: ; Delay_ms*16000 - 9
-	rcall wait_approx_1_msec ; 15980 cycles = 15977 cycles + 3 cycles overhead
+	rcall wait_approx_1_msec ; 15980 cycles = 15977 cycles
+	                         ;                + 3 cycles overhead
 	sbiw msl, 1 ; 2 cycles
 	brne label1 ; 2 or 1 cycles
 label1:
