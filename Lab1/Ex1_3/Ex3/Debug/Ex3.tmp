@@ -1,0 +1,44 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328PB"</DEVICE>
+ <WORKING_DIR>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\Debug\Ex3.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Ex3.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Ex3.map</FILE>
+  <FILE>Ex3.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <init><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>20</LINE></init>
+  <Output><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>33</LINE></Output>
+  <start><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>35</LINE></start>
+  <RIGHT><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>45</LINE></RIGHT>
+  <LEFT><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>37</LINE></LEFT>
+  <wait_x_msec><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>54</LINE></wait_x_msec>
+  <delay1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>57</LINE></delay1>
+  <wait_approx_1_msec><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>80</LINE></wait_approx_1_msec>
+  <label1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>61</LINE></label1>
+  <label2><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>63</LINE></label2>
+  <label3><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>65</LINE></label3>
+  <label4><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>67</LINE></label4>
+  <label5><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>69</LINE></label5>
+  <label6><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>71</LINE></label6>
+  <label7><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>73</LINE></label7>
+  <label8><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>75</LINE></label8>
+  <delay1_end><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>77</LINE></delay1_end>
+  <loop><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_3\Ex3\main.asm</FILE><LINE>85</LINE></loop>
+ </LABELS>
+</ASSEMBLER_INFO>

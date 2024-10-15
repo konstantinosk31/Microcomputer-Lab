@@ -12,7 +12,7 @@
 .def il=r26
 .def ih=r27
 
-.equ Delay_ms=1
+.equ Delay_ms=65535
 
 ; Replace with your application code
 init:
