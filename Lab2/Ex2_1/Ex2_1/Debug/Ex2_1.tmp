@@ -1,0 +1,33 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328PB"</DEVICE>
+ <WORKING_DIR>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\Debug\Ex2_1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Ex2_1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Ex2_1.map</FILE>
+  <FILE>Ex2_1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <reset><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>25</LINE></reset>
+  <isr1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>71</LINE></isr1>
+  <loop1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>55</LINE></loop1>
+  <loop2><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>57</LINE></loop2>
+  <delay_mS><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>83</LINE></delay_mS>
+  <end><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>79</LINE></end>
+  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>86</LINE></loop_inn>
+ </LABELS>
+</ASSEMBLER_INFO>
