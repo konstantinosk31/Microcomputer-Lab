@@ -15,7 +15,7 @@
 .org 0x0
 	rjmp reset
 .org 0x2
-	rjmp ISRO
+	rjmp ISR0
 
 reset: ; configure eternal Interrupts
 	ldi TMP, (1 << ISC01) | (1 << ISC00)	; set rising edge
