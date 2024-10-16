@@ -52,6 +52,8 @@ skip_inc:
 	pop DELL		;
 	pop TMP			;
 
+	reti			; return
+
 reset: ; configure eternal Interrupts
 	ldi TMP, (1 << ISC01) | (1 << ISC00)	; set rising edge
 	sts EICRA, TMP				;
