@@ -17,13 +17,6 @@
 .org 0x2
 	rjmp ISR0
 
-reset: ; configure eternal Interrupts
-	ldi TMP, (1 << ISC01) | (1 << ISC00)	; set rising edge
-	sts EICRA, TMP				;
-	ldi TMP, (1 << INT0)			; enable INT0
-	out EIMSK, TMP				;
-	sei					; Enable Interrupts
-
 ISR0:
 	push TMP		;
 	push DELL		; (this will be used for input)
@@ -59,6 +52,12 @@ skip_inc:
 	pop DELL		;
 	pop TMP			;
 
+reset: ; configure eternal Interrupts
+	ldi TMP, (1 << ISC01) | (1 << ISC00)	; set rising edge
+	sts EICRA, TMP				;
+	ldi TMP, (1 << INT0)			; enable INT0
+	out EIMSK, TMP				;
+	sei					; Enable Interrupts
 
 ; ---- MAIN CODE ----
 
