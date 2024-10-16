@@ -1,3 +1,17 @@
+;
+; Ex2_2.asm
+;
+; Created: 10/16/2024 12:58:39 PM
+; Author : User
+;
+
+;
+; Ex2_2.asm
+;
+; Created: 10/16/2024 12:53:50 PM
+; Author : User
+;
+
 .include "m328PBdef.inc"
 
 .equ FOSC_MHZ=16
@@ -26,16 +40,16 @@ ISR0:
 	push COUNTER		;
 
 	; TODO: output
-	int DELL, PINB		; Read input
+	in DELL, PINB		; Read input
 	andi DELL, 15		; Keep 4 LSBs
 	clr TMP			; Initialize result
 	clr COUNTER		; Initialize counter
 check_bit:
 	lsr DELL
-	brcc skip_inc		; If popped a 0, skip increasing TMP
+	brcs skip_inc		; If popped a 0, skip increasing TMP
 	inc TMP
 skip_inc:
-	inv COUNTER
+	inc COUNTER
 	cpi COUNTER, 4		; If haven't checked 4 bits, repeat
 	brne check_bit
 
@@ -69,9 +83,10 @@ out SPL, TMP
 ldi TMP, HIGH(RAMEND)
 out SPH, TMP
 
-; set PORTB as INPUT
+; set PORTB, PORTD as INPUT
 clr TMP
 out DDRB, TMP
+out DDRD, TMP
 ; set PORTC as OUTPUT
 ser TMP
 out DDRC, TMP
@@ -79,9 +94,9 @@ out DDRC, TMP
 init:
 	clr COUNTER		; reset to 0
 loop_:
-	out COUNTER		; output
-	load DELL, low(DEL_NU)	;
-	load DELH, high(DEL_NU)	; call delay
+	out PORTC, COUNTER		; output
+	ldi DELL, low(DEL_NU)	;
+	ldi DELH, high(DEL_NU)	; call delay
 	rcall delay_mS		;
 
 	inc COUNTER		; increase
@@ -92,7 +107,7 @@ loop_:
 
 delay_mS:	; Given procedure
 	ldi TMP, 249
-loop_in:
+loop_inn:
 	dec TMP
 	nop
 	brne loop_inn
