@@ -69,6 +69,19 @@ loop2:
 
 ; External interrupt 1 service routine
 isr1:
+	push r24
+	push r25
+	in r24, SREG
+	push r24
+isrloop:
+	ldi r24, (1<<INTF1)
+	out EIFR, r24
+	ldi r24, LOW(5*16)	;
+	ldi r25, HIGH(5*16)	; Set delay (number of cycles)
+	rcall delay_mS			;
+	in r24, EIFR
+	sbrc r24, INTF1			; skip next instruction if EIFR & (1<<INTF1) == 0
+	rjmp isrloop			; don't continue until EIFR & (1<<INTF1) == 0 to avoid debouncing
 	in pin, PIND
 	sbrs pin, 5				; skip next instruction if PB5=1 (not pressed)
 	rjmp end				; skip interrupt if PB5=0 (pressed)
@@ -76,7 +89,11 @@ isr1:
 	sbrc int1counter, 6		; skip next instruction if int1counter & (1<<6) == 0
 	clr int1counter			; reached 2^6 = 64, return to 0
 	out PORTC, int1counter
-end:	
+end:
+	pop r24
+	out SREG, r24
+	pop r25
+	pop r24
 	reti					; Return from interrupt
 
 ; delay of 1000*F1+6 cycles (almost equal to 1000*F1 cycles)

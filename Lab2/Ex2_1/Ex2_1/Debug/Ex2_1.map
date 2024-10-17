@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm Wed Oct 16 14:16:14 2024
+AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm Wed Oct 16 16:41:34 2024
 
 
 EQU  SIGNATURE_000 0000001e
@@ -1155,6 +1155,7 @@ CSEG reset        00000005
 CSEG isr1         0000001f
 CSEG loop1        00000016
 CSEG loop2        00000017
-CSEG delay_mS     00000027
-CSEG end          00000026
-CSEG loop_inn     00000028
+CSEG delay_mS     00000037
+CSEG isrloop      00000023
+CSEG end          00000032
+CSEG loop_inn     00000038

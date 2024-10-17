@@ -26,8 +26,9 @@
   <isr1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>71</LINE></isr1>
   <loop1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>55</LINE></loop1>
   <loop2><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>57</LINE></loop2>
-  <delay_mS><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>83</LINE></delay_mS>
-  <end><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>79</LINE></end>
-  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>86</LINE></loop_inn>
+  <delay_mS><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>100</LINE></delay_mS>
+  <isrloop><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>76</LINE></isrloop>
+  <end><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>92</LINE></end>
+  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab2\Ex2_1\Ex2_1\main.asm</FILE><LINE>103</LINE></loop_inn>
  </LABELS>
 </ASSEMBLER_INFO>
