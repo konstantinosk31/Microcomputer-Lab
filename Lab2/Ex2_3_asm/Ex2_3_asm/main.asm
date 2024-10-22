@@ -52,7 +52,6 @@ reset: ; configure eternal Interrupts
 	sts EICRA, TMP				;
 	ldi TMP, (1 << INT1)			; enable INT1
 	out EIMSK, TMP				;
-	sei					; enable Interrupts
 
 ; init SP
 ldi TMP, LOW(RAMEND)
@@ -67,6 +66,8 @@ out DDRB, TMP
 ; set PORTD as INPUT
 clr TMP
 out DDRD, TMP
+
+sei					; enable Interrupts
 
 init:
 	clr FLG			;
