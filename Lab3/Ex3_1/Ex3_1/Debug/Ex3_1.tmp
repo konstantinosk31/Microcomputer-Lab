@@ -22,12 +22,14 @@
   <FILE>Ex3_1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <DUTY><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>13</LINE></DUTY>
-  <init><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>17</LINE></init>
-  <start><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>48</LINE></start>
-  <delay_mS><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>72</LINE></delay_mS>
-  <decreasing><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>64</LINE></decreasing>
-  <increasing><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>57</LINE></increasing>
-  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>75</LINE></loop_inn>
+  <reset><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>58</LINE></reset>
+  <pc2isr><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>27</LINE></pc2isr>
+  <DUTY><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>23</LINE></DUTY>
+  <increase><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>40</LINE></increase>
+  <decrease><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>46</LINE></decrease>
+  <end><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>51</LINE></end>
+  <start><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>100</LINE></start>
+  <delay_mS><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>111</LINE></delay_mS>
+  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>114</LINE></loop_inn>
  </LABELS>
 </ASSEMBLER_INFO>
