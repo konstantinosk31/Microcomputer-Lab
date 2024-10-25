@@ -23,7 +23,7 @@ init:
 
 	; Set PORTB as output
 	ser temp
-	out DDRD, temp
+	out DDRB, temp
 
 	; Fast PWM, 8 bit, non-inverting output, N = 256. BOTTOM = 0, TOP = 0x00ff = 255
 	ldi temp, (1<<WGM10) | (1<<COM1A1)
