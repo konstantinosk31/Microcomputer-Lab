@@ -73,8 +73,7 @@ reset: ; configure eternal Interrupts
 	sts EICRA, TMP				;
 	ldi TMP, (1 << INT0)			; enable INT0
 	out EIMSK, TMP				;
-	sei					; Enable Interrupts
-
+	
 ; ---- MAIN CODE ----
 
 ; init SP
@@ -90,6 +89,8 @@ out DDRD, TMP
 ; set PORTC as OUTPUT
 ser TMP
 out DDRC, TMP
+
+sei					; Enable Interrupts
 
 init:
 	clr COUNTER		; reset to 0
