@@ -5,6 +5,8 @@
 ; Author : User
 ;
 
+.include "m328PBdef.inc"
+
 .def temp = r16
 .def DC_VALUE = r17
 .def DC_INC = r18 ; DC_INC = 1 -> DC_VALUE increasing, DC_INC = 0 -> DC_VALUE decreasing
@@ -31,9 +33,6 @@ init:
 	ldi temp, (1<<WGM12) | (1<<CS12)
 	sts TCCR1B, temp
 
-	ldi DC_VALUE, 128
-	sts OCR1AL, DC_VALUE
-
 	; Initialize i to duty cycle starting position: 6 (50%)
 	ldi i, DUTY_START
 
@@ -58,15 +57,15 @@ increasing:
 	inc i
 	adiw Z, 1
 	cpi i, DUTY_LEN
-	breq decreasing
-
-	rjmp start
+	brne start
+	ldi DC_INC, 0
+	rjmp decreasing
 decreasing:
 	dec i
 	sbiw Z, 1
-	brmi increasing
-
-    rjmp start
+	brpl start
+	ldi DC_INT, 1
+    rjmp increasing
 	
 ; delay of 1000*F1+6 cycles (almost equal to 1000*F1 cycles)
 delay_mS:
