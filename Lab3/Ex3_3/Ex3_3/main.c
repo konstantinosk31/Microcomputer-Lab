@@ -31,7 +31,8 @@ ISR(PCINT2_vect){
 	}
 	else if(temp & (1<<7)){ //PD7 pressed -> select mode2
 		mode = mode2;
-		//! TO-DO: DC_VALUE = ...; Read A0 ADC input;
+		while (ADCSRA & (1 << ADSC));
+		DC_VAL = ADCH;
 	}
 	else if(mode1 && (temp & (1<<1))){ //PD1 pressed
 		if(i < DUTY_LAST){
@@ -67,7 +68,10 @@ int main(void)
 	
 	i = DUTY_START;
 	
-	//! TO-DO: Init POT1 (A0 ADC input)
+	//   Vref = 5V, ADC0, Left adjust
+	ADMUX = (1 << VREF0) | (1 << ADLAR) | (0 << MUX0);
+	//   Enable, no interrupt, no conversion, 125 kHz
+	ADCSRA = (1 << ADEN) | (0 << ADCS) | (0 << ADIE) | (7 << ADPS0);
 	
 	sei();
 	
