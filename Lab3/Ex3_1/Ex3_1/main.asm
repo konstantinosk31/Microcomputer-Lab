@@ -15,23 +15,27 @@
 
 .def temp = r16
 .def DC_VALUE = r17
-.def DC_INC = r18 ; DC_INC = 1 -> DC_VALUE increasing, DC_INC = 0 -> DC_VALUE decreasing
 .def i = r19
 .def prev_PIND = r20
 .def cur_PIND = r21
 
-DUTY: .DB 5, 26, 46, 66, 87, 107, 128, 148, 168, 189, 209, 230, 250 ; 255*(2+8k)/100, k = 0 ... 12. Initial k = 6.
+DUTY: .DW 5, 26, 46, 66, 87, 107, 128, 148, 168, 189, 209, 230, 250 ; 255*(2+8k)/100, k = 0 ... 12. Initial k = 6.
 .equ DUTY_LAST = 12
 .equ DUTY_START = 6
 
 pc2isr:
-	push temp
-	in temp, SREG
-	push temp
+	push temp				;
+	in temp, SREG			; Push into stack
+	push temp				;
+
 	in cur_PIND, PIND		; Get the current set PIND bits
-	mov temp, prev_PIND
-	com temp				; Get the previous clear PIND bits
-	and temp, cur_PIND		; Get the 1 bit that was just set and caused the PCINT2 interrupt
+
+	com cur_PIND			; Flip input
+	mov temp, prev_PIND		; 
+	com temp				; 
+	and temp, cur_PIND		; Get the 1 bit that was just cleared and caused the PCINT2 interrupt
+	mov prev_PIND, cur_PIND ; Update prev_PIND
+
 	sbrc temp, 3			; Skip next instruction if PD3 was not pressed
 	rjmp increase
 	sbrc temp, 4			; Skip next instruction if PD4 was not pressed
@@ -41,19 +45,18 @@ increase:
 	cpi i, DUTY_LAST
 	breq end
 	inc i
-	adiw Z, 1
+	adiw Z, 2
 	rjmp end
 decrease:
 	cpi i, 0
 	breq end
 	dec i
-	sbiw Z, 1
+	sbiw Z, 2
 end:
-	mov prev_PIND, cur_PIND
 	pop temp
 	out SREG, temp
 	pop temp
-	rjmp reset
+	reti
 
 reset:
 	; Init stack pointer
@@ -89,11 +92,11 @@ reset:
 
 	; Initialize i to duty cycle starting position: 6 (50%)
 	ldi i, DUTY_START
-
 	; Load the starting address of the duty cycle value into Z
-	LDI ZH, HIGH(2*DUTY+DUTY_START)
-	LDI ZL, LOW(2*DUTY+DUTY_START)
+	LDI ZH, HIGH(2*(DUTY+DUTY_START))
+	LDI ZL, LOW(2*(DUTY+DUTY_START))
 
+	; Enable interrupts
 	sei
 
 ; Replace with your application code
@@ -101,10 +104,9 @@ start:
 	lpm DC_VALUE, Z
 	sts OCR1AL, DC_VALUE
 
-	ldi r24, LOW(10*16)	;
-	ldi r25, HIGH(10*16)	; Set delay (10ms * 16)
-	rcall delay_mS			; Delay for 10ms
-
+	ldi r24, LOW(10*16)
+	ldi r25, HIGH(10*16)
+	rcall delay_mS
 	rjmp start
 	
 ; delay of 1000*F1+6 cycles (almost equal to 1000*F1 cycles)

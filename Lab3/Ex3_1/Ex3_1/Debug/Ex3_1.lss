@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm Fri Oct 25 23:22:09 2024
+AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm Wed Oct 30 16:09:10 2024
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
 C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
@@ -1587,123 +1587,136 @@ C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm(8): I
                                  
                                  
                                  .org 0x0
-000000 c02b                      	rjmp reset
+000000 c034                      	rjmp reset
                                  
                                  .org 0xA
-00000a c007                      	rjmp pc2isr
+00000a c00d                      	rjmp pc2isr
                                  
                                  .def temp = r16
                                  .def DC_VALUE = r17
-                                 .def DC_INC = r18 ; DC_INC = 1 -> DC_VALUE increasing, DC_INC = 0 -> DC_VALUE decreasing
                                  .def i = r19
                                  .def prev_PIND = r20
                                  .def cur_PIND = r21
                                  
-00000b 1a05
-00000c 422e
-00000d 6b57
-00000e 9480
-00000f bda8
-000010 e6d1
-C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm(23): warning: .cseg .db misalignment - padding zero byte
-000011 00fa                      DUTY: .DB 5, 26, 46, 66, 87, 107, 128, 148, 168, 189, 209, 230, 250 ; 255*(2+8k)/100, k = 0 ... 12. Initial k = 6.
+00000b 0005
+00000c 001a
+00000d 002e
+00000e 0042
+00000f 0057
+000010 006b
+000011 0080
+000012 0094
+000013 00a8
+000014 00bd
+000015 00d1
+000016 00e6
+000017 00fa                      DUTY: .DW 5, 26, 46, 66, 87, 107, 128, 148, 168, 189, 209, 230, 250 ; 255*(2+8k)/100, k = 0 ... 12. Initial k = 6.
                                  .equ DUTY_LAST = 12
                                  .equ DUTY_START = 6
                                  
                                  pc2isr:
-000012 930f                      	push temp
-000013 b70f                      	in temp, SREG
-000014 930f                      	push temp
-000015 b159                      	in cur_PIND, PIND		; Get the current set PIND bits
-000016 2f04                      	mov temp, prev_PIND
-000017 9500                      	com temp				; Get the previous clear PIND bits
-000018 2305                      	and temp, cur_PIND		; Get the 1 bit that was just set and caused the PCINT2 interrupt
-000019 fd03                      	sbrc temp, 3			; Skip next instruction if PD3 was not pressed
-00001a c003                      	rjmp increase
-00001b fd04                      	sbrc temp, 4			; Skip next instruction if PD4 was not pressed
-00001c c006                      	rjmp decrease
-00001d c009                      	rjmp end
+000018 930f                      	push temp				;
+000019 b70f                      	in temp, SREG			; Push into stack
+00001a 930f                      	push temp				;
+                                 
+00001b b159                      	in cur_PIND, PIND		; Get the current set PIND bits
+                                 
+00001c b958                      	out PORTC, cur_PIND		; WORKS
+                                 
+00001d 9550                      	com cur_PIND			; Flip input
+00001e 2f04                      	mov temp, prev_PIND		; 
+00001f 9500                      	com temp				; 
+000020 2305                      	and temp, cur_PIND		; Get the 1 bit that was just cleared and caused the PCINT2 interrupt
+000021 2f45                      	mov prev_PIND, cur_PIND ; Update prev_PIND
+                                 
+000022 b908                      	out PORTC, temp			; WORKS
+                                 
+000023 fd03                      	sbrc temp, 3			; Skip next instruction if PD3 was not pressed
+000024 c003                      	rjmp increase
+000025 fd04                      	sbrc temp, 4			; Skip next instruction if PD4 was not pressed
+000026 c006                      	rjmp decrease
+000027 c009                      	rjmp end
                                  increase:
-00001e 303c                      	cpi i, DUTY_LAST
-00001f f039                      	breq end
-000020 9533                      	inc i
-000021 9631                      	adiw Z, 1
-000022 c004                      	rjmp end
+000028 303c                      	cpi i, DUTY_LAST
+000029 f039                      	breq end
+00002a 9533                      	inc i
+00002b 9632                      	adiw Z, 2
+00002c c004                      	rjmp end
                                  decrease:
-000023 3030                      	cpi i, 0
-000024 f011                      	breq end
-000025 953a                      	dec i
-000026 9731                      	sbiw Z, 1
+00002d 3030                      	cpi i, 0
+00002e f011                      	breq end
+00002f 953a                      	dec i
+000030 9732                      	sbiw Z, 2
                                  end:
-000027 2f45                      	mov prev_PIND, cur_PIND
-000028 910f                      	pop temp
-000029 bf0f                      	out SREG, temp
-00002a 910f                      	pop temp
-00002b c000                      	rjmp reset
+000031 910f                      	pop temp
+000032 bf0f                      	out SREG, temp
+000033 910f                      	pop temp
+000034 9518                      	reti
                                  
                                  reset:
                                  	; Init stack pointer
-00002c e008                      	ldi temp, high(RAMEND)
-00002d bf0e                      	out SPH, temp
-00002e ef0f                      	ldi temp, low(RAMEND)
-00002f bf0d                      	out SPL, temp
+000035 e008                      	ldi temp, high(RAMEND)
+000036 bf0e                      	out SPH, temp
+000037 ef0f                      	ldi temp, low(RAMEND)
+000038 bf0d                      	out SPL, temp
                                  
                                  	; Set PORTB as output
-000030 ef0f                      	ser temp
-000031 b904                      	out DDRB, temp
+000039 ef0f                      	ser temp
+00003a b904                      	out DDRB, temp
+                                 
+00003b b907                      	out DDRC, temp ;FOR TESTING
                                  
                                  	; Set PORTD as input
-000032 2700                      	clr temp
-000033 b90a                      	out DDRD, temp
+00003c 2700                      	clr temp
+00003d b90a                      	out DDRD, temp
                                  
                                  	; Fast PWM, 8 bit, non-inverting output, N = 256. BOTTOM = 0, TOP = 0x00ff = 255
-000034 e801                      	ldi temp, (1<<WGM10) | (1<<COM1A1)
-000035 9300 0080                 	sts TCCR1A, temp
-000037 e00c                      	ldi temp, (1<<WGM12) | (1<<CS12)
-000038 9300 0081                 	sts TCCR1B, temp
+00003e e801                      	ldi temp, (1<<WGM10) | (1<<COM1A1)
+00003f 9300 0080                 	sts TCCR1A, temp
+000041 e00c                      	ldi temp, (1<<WGM12) | (1<<CS12)
+000042 9300 0081                 	sts TCCR1B, temp
                                  
                                  	; Enable PCINT19 (PD3), PCINT20 (PD4) interrupts
-00003a e108                      	ldi temp, (1<<PCINT19) | (1<<PCINT20)
-00003b 9300 006d                 	sts PCMSK2, temp
+000044 e108                      	ldi temp, (1<<PCINT19) | (1<<PCINT20)
+000045 9300 006d                 	sts PCMSK2, temp
                                  	
                                  	; Enable Pin Change Interrupt 2: PCINT[23:16]
-00003d e004                      	ldi temp, (1<<PCIE2)
-00003e 9300 0068                 	sts PCICR, temp
+000047 e004                      	ldi temp, (1<<PCIE2)
+000048 9300 0068                 	sts PCICR, temp
                                  
                                  	; Set previous state of PIND = 0
-000040 e040                      	ldi prev_PIND, 0
+00004a e040                      	ldi prev_PIND, 0
                                  
                                  	; Initialize i to duty cycle starting position: 6 (50%)
-000041 e036                      	ldi i, DUTY_START
-                                 
+00004b e036                      	ldi i, DUTY_START
                                  	; Load the starting address of the duty cycle value into Z
-000042 e0f0                      	LDI ZH, HIGH(2*DUTY+DUTY_START)
-000043 e1ec                      	LDI ZL, LOW(2*DUTY+DUTY_START)
+00004c e0f0                      	LDI ZH, HIGH(2*(DUTY+DUTY_START))
+00004d e2e2                      	LDI ZL, LOW(2*(DUTY+DUTY_START))
                                  
-000044 9478                      	sei
+                                 	; Enable interrupts
+00004e 9478                      	sei
                                  
                                  ; Replace with your application code
                                  start:
-000045 9114                      	lpm DC_VALUE, Z
-000046 9310 0088                 	sts OCR1AL, DC_VALUE
+00004f 9114                      	lpm DC_VALUE, Z
+000050 9310 0088                 	sts OCR1AL, DC_VALUE
                                  
-000048 ea80                      	ldi r24, LOW(10*16)	;
-000049 e090                      	ldi r25, HIGH(10*16)	; Set delay (10ms * 16)
-00004a d001                      	rcall delay_mS			; Delay for 10ms
-                                 
-00004b cff9                      	rjmp start
+000052 ea80                      	ldi r24, LOW(10*16)
+000053 e090                      	ldi r25, HIGH(10*16)
+000054 d001                      	rcall delay_mS
+000055 cff9                      	rjmp start
                                  	
                                  ; delay of 1000*F1+6 cycles (almost equal to 1000*F1 cycles)
                                  delay_mS:
                                  ; total delay of next 4 instruction group = 1+(249*4-1) = 996 cycles
-00004c ef79                      	ldi r23, 249			; (1 cycle)
+000056 ef79                      	ldi r23, 249			; (1 cycle)
                                  loop_inn:
-00004d 957a                      	dec r23					; 1 cycle
-00004e 0000                      	nop						; 1 cycle
-00004f f7e9                      	brne loop_inn			; 1 or 2 cycles
+000057 957a                      	dec r23					; 1 cycle
+000058 0000                      	nop						; 1 cycle
+000059 f7e9                      	brne loop_inn			; 1 or 2 cycles
                                  
-000050 9701                      	sbiw r24, 1				; 2 cycles
-000051 f7d1                      	brne delay_mS			; 1 or 2 cycles
+00005a 9701                      	sbiw r24, 1				; 2 cycles
+00005b f7d1                      	brne delay_mS			; 1 or 2 cycles
                                  
 
 
@@ -1724,8 +1737,8 @@ counted separately from r26..r31 here.
 "ATmega328PB" register use summary:
 x  :   0 y  :   0 z  :   3 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  27 r17:   2 r18:   0 r19:   5 r20:   3 
-r21:   3 r22:   0 r23:   2 r24:   2 r25:   1 r26:   0 r27:   0 r28:   0 
+r13:   0 r14:   0 r15:   0 r16:  29 r17:   2 r18:   0 r19:   5 r20:   3 
+r21:   5 r22:   0 r23:   2 r24:   2 r25:   1 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   1 r31:   1 
 Registers used: 11 out of 35 (31.4%)
 
@@ -1737,25 +1750,25 @@ brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0
 brne  :   2 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   1 cls   :   0 
-clt   :   0 clv   :   0 clz   :   0 com   :   1 cp    :   0 cpc   :   0 
+clt   :   0 clv   :   0 clz   :   0 com   :   2 cp    :   0 cpc   :   0 
 cpi   :   2 cpse  :   0 dec   :   2 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   2 inc   :   1 jmp   :   0 
 ld    :   0 ldd   :   0 ldi   :  13 lds   :   0 lpm   :   2 lsl   :   0 
 lsr   :   0 mov   :   2 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :   5 pop   :   2 
-push  :   2 rcall :   1 ret   :   1 reti  :   0 rjmp  :   8 rol   :   0 
+neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :   8 pop   :   2 
+push  :   2 rcall :   1 ret   :   1 reti  :   1 rjmp  :   7 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   2 sbr   :   0 sbrc  :   2 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   1 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   5 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 25 out of 113 (22.1%)
+Instructions used: 26 out of 113 (23.0%)
 
 "ATmega328PB" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000a6    134     14    148   32768   0.5%
+[.cseg] 0x000000 0x0000ba    142     26    168   32768   0.5%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
-Assembly complete, 0 errors, 1 warnings
+Assembly complete, 0 errors, 0 warnings
