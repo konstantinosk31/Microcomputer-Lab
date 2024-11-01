@@ -1,10 +1,14 @@
 
-AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm Fri Nov 01 13:52:51 2024
+AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm Fri Nov 01 12:45:57 2024
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
-C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
+C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
+C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm(25): warning: Register r26 already defined by the .DEF directive
+C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm(26): warning: Register r27 already defined by the .DEF directive
+C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm(27): warning: Register r28 already defined by the .DEF directive
+C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm(28): warning: Register r29 already defined by the .DEF directive
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
-C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
+C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
                                  
                                  ;
                                  
@@ -1549,9 +1553,9 @@ C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm(8): I
                                  
                                  
                                  
-                                 ; Ex3_1.asm
+                                 ; Ex4_1.asm
                                  ;
-                                 ; Created: 10/25/2024 5:06:29 PM
+                                 ; Created: 11/1/2024 11:47:20 AM
                                  ; Author : User
                                  ;
                                  
@@ -1587,131 +1591,302 @@ C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm(8): I
                                  
                                  
                                  .org 0x0
-000000 c032                      	rjmp reset
+000000 c035                      	rjmp reset
+                                 .org 0x2a
+00002a c000                      	rjmp adcisr
                                  
-                                 .org 0xA
-00000a c00d                      	rjmp pc2isr
+                                 .def tmp  = r16
+                                 .def lcd  = r17
+                                 .def val0 = r18
+                                 .def val1 = r19
+                                 .def tmp0 = r20
+                                 .def tmp1 = r21
+                                 .def i    = r22
+                                 .def k    = r23
+                                 .def argl = r24
+                                 .def argh = r25
+                                 .def res0 = r26
+                                 .def res1 = r27
+                                 .def res2 = r28
+                                 .def res3 = r29
                                  
-                                 .def temp = r16
-                                 .def DC_VALUE = r17
-                                 .def i = r19
-                                 .def prev_PIND = r20
-                                 .def cur_PIND = r21
+                                 .equ PD2 = 2
+                                 .equ PD3 = 3
                                  
-00000b 0005
-00000c 001a
-00000d 002e
-00000e 0042
-00000f 0057
-000010 006b
-000011 0080
-000012 0094
-000013 00a8
-000014 00bd
-000015 00d1
-000016 00e6
-000017 00fa                      DUTY: .DW 5, 26, 46, 66, 87, 107, 128, 148, 168, 189, 209, 230, 250 ; 255*(2+8k)/100, k = 0 ... 12. Initial k = 6.
-                                 .equ DUTY_LAST = 12
-                                 .equ DUTY_START = 6
+                                 adcisr:
+00002b 930f                      	push tmp		;
+00002c b70f                      	in tmp, SREG		; Push into stack
+00002d 930f                      	push tmp		;
                                  
-                                 pc2isr:
-000018 930f                      	push temp				;
-000019 b70f                      	in temp, SREG			; Push into stack
-00001a 930f                      	push temp				;
+00002e 9120 0078                 	lds val0, ADCL		;
+000030 9130 0079                 	lds val1, ADCH		; Get analog input
+                                 	; out PORTB, val0
+                                 	
+000032 910f                      	pop tmp		;
+000033 bf0f                      	out SREG, tmp	; Pop from stack
+000034 910f                      	pop tmp		;
+000035 9518                      	reti
+                                 	/*; Multiply x500{{{
+                                 	ldi tmp0, LOW(500)
+                                 	ldi tmp1, HIGH(500)
                                  
-00001b b159                      	in cur_PIND, PIND		; Get the current set PIND bits
+                                 	clr tmp
                                  
-00001c 9550                      	com cur_PIND			; Flip input
-00001d 2f04                      	mov temp, prev_PIND		; 
-00001e 9500                      	com temp				; 
-00001f 2305                      	and temp, cur_PIND		; Get the 1 bit that was just cleared and caused the PCINT2 interrupt
-000020 2f45                      	mov prev_PIND, cur_PIND ; Update prev_PIND
+                                 	mul val0, tmp0
+                                 	movw res0, r0
+                                 	clr res2
+                                 	clr res3
                                  
-000021 fd03                      	sbrc temp, 3			; Skip next instruction if PD3 was not pressed
-000022 c003                      	rjmp increase
-000023 fd04                      	sbrc temp, 4			; Skip next instruction if PD4 was not pressed
-000024 c006                      	rjmp decrease
-000025 c009                      	rjmp end
-                                 increase:
-000026 303c                      	cpi i, DUTY_LAST
-000027 f039                      	breq end
-000028 9533                      	inc i
-000029 9632                      	adiw Z, 2
-00002a c004                      	rjmp end
-                                 decrease:
-00002b 3030                      	cpi i, 0
-00002c f011                      	breq end
-00002d 953a                      	dec i
-00002e 9732                      	sbiw Z, 2
-                                 end:
-00002f 910f                      	pop temp
-000030 bf0f                      	out SREG, temp
-000031 910f                      	pop temp
-000032 9518                      	reti
+                                 	mul val0, tmp1
+                                 	add res1, r0
+                                 	adc res2, r1
+                                 	adc res3, tmp
+                                 
+                                 	mul val1, tmp0
+                                 	add res1, r0
+                                 	adc res2, r1
+                                 	adc res3, tmp
+                                 
+                                 	mul val1, tmp1
+                                 	add res2, r0
+                                 	adc res3, r1; }}}
+                                 
+                                 	; Divide by 1024
+                                 	ldi i, 10
+                                 _loop:	clc
+                                 	ror res2 ror res1 ror res0
+                                 	dec i
+                                 	brne _loop
+                                 	; HAVE THE ANSWER, 4 digits (1 + comma + 2 decimals)
+                                 
+                                 	ldi i,3
+                                 	; Convert into decimals
+                                 convert:
+                                 	rcall divide_by10 ; Quotient in res0:1, remainder in r0:1
+                                 	mov tmp, r0
+                                 	subi tmp, -0x30	; Convert into char
+                                 	push tmp		; Push to stack
+                                 	dec i
+                                 	brne convert
+                                 
+                                 	; Output
+                                 	rcall lcd_clear_display
+                                 	pop argl rcall lcd_data		; First digit
+                                 	ldi argl, 0x2e rcall lcd_data	; Period
+                                 	pop argl rcall lcd_data		; First decimal
+                                 	pop argl rcall lcd_data		; Second decimal
+                                 */
                                  
                                  reset:
-                                 	; Init stack pointer
-000033 e008                      	ldi temp, high(RAMEND)
-000034 bf0e                      	out SPH, temp
-000035 ef0f                      	ldi temp, low(RAMEND)
-000036 bf0d                      	out SPL, temp
+000036 e008                      	ldi tmp, high(RAMEND)	;
+000037 bf0e                      	out SPH, tmp		; Initialize SP
+000038 ef0f                      	ldi tmp, low(RAMEND)	;
+000039 bf0d                      	out SPL, tmp		;
                                  
-                                 	; Set PORTB as output
-000037 ef0f                      	ser temp
-000038 b904                      	out DDRB, temp
+00003a ef0f                      	ser tmp			; Set PORTD (LSD) as output
+00003b b90a                      	out DDRD, tmp		;
+00003c b904                      	out DDRB, tmp
                                  
-                                 	; Set PORTD as input
-000039 2700                      	clr temp
-00003a b90a                      	out DDRD, temp
+                                 	; ser tmp out PORTB, tmp	
+                                 	; rcall lcd_init		; Initialize LCD
+                                 	; rcall lcd_clear_display
+                                 	; clr tmp out PORTB, tmp
                                  
-                                 	; Fast PWM, 8 bit, non-inverting output, N = 256. BOTTOM = 0, TOP = 0x00ff = 255
-00003b e801                      	ldi temp, (1<<WGM10) | (1<<COM1A1)
-00003c 9300 0080                 	sts TCCR1A, temp
-00003e e00c                      	ldi temp, (1<<WGM12) | (1<<CS12)
-00003f 9300 0081                 	sts TCCR1B, temp
+00003d e401                      	ldi tmp, 0b01000001	; Set ADC1: 5V, Right aligned, ADC1
+00003e 9300 007c                 	sts ADMUX, tmp		;
+000040 e80f                      	ldi tmp, 0b10001111	; Enable, Interrupts, 125kHz
+000041 9300 007a                 	sts ADCSRA, tmp
                                  
-                                 	; Enable PCINT19 (PD3), PCINT20 (PD4) interrupts
-000041 e108                      	ldi temp, (1<<PCINT19) | (1<<PCINT20)
-000042 9300 006d                 	sts PCMSK2, temp
-                                 	
-                                 	; Enable Pin Change Interrupt 2: PCINT[23:16]
-000044 e004                      	ldi temp, (1<<PCIE2)
-000045 9300 0068                 	sts PCICR, temp
+000043 9478                      	sei			; Enable interrupts
+000044 e070                      	ldi k, 0
                                  
-                                 	; Set previous state of PIND = 0
-000047 e040                      	ldi prev_PIND, 0
-                                 
-                                 	; Initialize i to duty cycle starting position: 6 (50%)
-000048 e036                      	ldi i, DUTY_START
-                                 	; Load the starting address of the duty cycle value into Z
-000049 e0f0                      	LDI ZH, HIGH(2*(DUTY+DUTY_START))
-00004a e2e2                      	LDI ZL, LOW(2*(DUTY+DUTY_START))
-                                 
-                                 	; Enable interrupts
-00004b 9478                      	sei
-                                 
-                                 ; Replace with your application code
                                  start:
-00004c 9114                      	lpm DC_VALUE, Z
-00004d 9310 0088                 	sts OCR1AL, DC_VALUE
-                                 
-00004f ea80                      	ldi r24, LOW(10*16)
-000050 e090                      	ldi r25, HIGH(10*16)
-000051 d001                      	rcall delay_mS
-000052 cff9                      	rjmp start
+                                 	/*lds tmp, ADCSRA
+                                 	ori tmp, 1 << ADSC
+                                 	sts ADCSRA, tmp*/
                                  	
-                                 ; delay of 1000*F1+6 cycles (almost equal to 1000*F1 cycles)
-                                 delay_mS:
+000045 9573                      	inc k
+000046 b975                      	out PORTB, k
+                                 	
+000047 e684                      	ldi r24, LOW(100)	; Set delay time to 100ms
+000048 e090                      	ldi r25, HIGH(100)	;
+000049 d06e                      	rcall wait_msec		; Loop with delay
+00004a cffa                      	rjmp start
+                                 
+                                 divide_by10:
+00004b 930f                      	push tmp		;
+00004c b70f                      	in tmp, SREG		; Push into stack
+00004d 930f                      	push tmp		;
+00004e 938f
+00004f 939f                      	push argl push argh
+                                 
+000050 2788
+000051 2799                      	clr argl clr argh
+                                 div_loop:
+000052 23bb                      	tst res1
+000053 f411                      	brne div_cont
+000054 30aa                      	cpi res0, 10
+000055 f01c                      	brlt div_done
+                                 div_cont:
+000056 971a                      	sbiw res0, 10
+000057 9601                      	adiw argl, 1
+000058 cff9                      	rjmp div_loop
+                                 div_done:
+000059 2e0a
+00005a 2fa8                      	mov r0, res0 mov res0, argl
+00005b 2e1b
+00005c 2fb9                      	mov r1, res1 mov res1, argh
+                                 
+00005d 919f
+00005e 918f                      	pop argh pop argl
+00005f 910f                      	pop tmp		;
+000060 bf0f                      	out SREG, tmp	; Pop from stack
+000061 910f                      	pop tmp		;
+000062 9508                      	ret
+                                 
+                                 write_2_nibbles:; {{{
+000063 938f                      	push r24
+                                 	; save r24(LCD_Data)
+000064 b199                      	in r25 ,PIND; read PIND
+000065 709f                      	andi r25 ,0x0f
+000066 7f80                      	andi r24 ,0xf0
+000067 0f89                      	add r24 ,r25
+000068 b98b                      	out PORTD ,r24;
+                                 	; r24[3:0] Holds previus PORTD[3:0]
+                                 	; r24[7:4] <-- LCD_Data_High_Byte
+                                 	;
+000069 9a5b                      	sbi PORTD ,PD3
+00006a 0000                      	nop
+00006b 0000                      	nop
+00006c 985b                      	cbi PORTD ,PD3; Enable Pulse
+00006d 918f                      	pop r24
+00006e 9582                      	swap r24
+00006f 7f80                      	andi r24 ,0xf0
+000070 0f89                      	add r24 ,r25
+000071 b98b                      	out PORTD ,r24; Recover r24(LCD_Data)
+                                 	;
+                                 	; r24[3:0] Holds previus PORTD[3:0]
+                                 	; r24[7:4] <-- LCD_Data_Low_Byte
+000072 9a5b                      	sbi PORTD ,PD3
+000073 0000                      	nop
+000074 0000                      	nop
+000075 985b                      	cbi PORTD ,PD3; Enable Pulse
+000076 9508                      	ret; }}}
+                                 
+                                 lcd_data:; {{{
+000077 9a5a                      	sbi PORTD ,PD2
+000078 dfea                      	rcall write_2_nibbles
+000079 ef8a                      	ldi r24 ,250
+00007a e090                      	ldi r25 ,0
+00007b d043                      	rcall wait_usec
+00007c 9508                      	ret; }}}
+                                 
+                                 lcd_command:; {{{
+00007d 985a                      	cbi PORTD ,PD2
+00007e dfe4                      	rcall write_2_nibbles
+00007f ef8a                      	ldi r24 ,250
+000080 e090                      	ldi r25 ,0
+000081 d03d                      	rcall wait_usec
+000082 9508                      	ret; }}}
+                                 
+                                 lcd_clear_display:; {{{
+000083 e081                      	ldi r24 ,0x01
+000084 dff8                      	rcall lcd_command	; clear display command
+000085 e085                      	ldi r24 ,low(5)
+000086 e090                      	ldi r25 ,high(5)
+000087 d030                      	rcall wait_msec		; Wait 5 mSec
+000088 9508                      	ret; }}}
+                                 
+                                 lcd_init:; {{{
+000089 ec88                      	ldi r24 ,low(200)
+00008a e090                      	ldi r25 ,high(200)
+00008b d02c                      	rcall wait_msec;
+                                 	; Wait 200 mSec
+                                 	;
+00008c e380                      	ldi r24 ,0x30
+00008d b98b                      	out PORTD ,r24
+00008e 9a5b                      	sbi PORTD ,PD3
+00008f 0000                      	nop
+000090 0000                      	nop
+000091 985b                      	cbi PORTD ,PD3
+000092 ef8a                      	ldi r24 ,250
+000093 e090                      	ldi r25 ,0
+000094 d02a                      	rcall wait_usec; command to switch to 8 bit mode
+                                 	;
+                                 	; Enable Pulse
+000095 e380                      	ldi r24 ,0x30
+000096 b98b                      	out PORTD ,r24
+000097 9a5b                      	sbi PORTD ,PD3
+000098 0000                      	nop
+000099 0000                      	nop
+00009a 985b                      	cbi PORTD ,PD3
+00009b ef8a                      	ldi r24 ,250
+00009c e090                      	ldi r25 ,0
+00009d d021                      	rcall wait_usec; command to switch to 8 bit mode
+                                 	;
+                                 	; Enable Pulse
+00009e e380                      	ldi r24 ,0x30
+00009f b98b                      	out PORTD ,r24
+0000a0 9a5b                      	sbi PORTD ,PD3
+0000a1 0000                      	nop
+0000a2 0000                      	nop
+0000a3 985b                      	cbi PORTD ,PD3
+0000a4 ef8a                      	ldi r24 ,250
+0000a5 e090                      	ldi r25 ,0
+0000a6 d018                      	rcall wait_usec
+                                 
+0000a7 e280                      	ldi r24 ,0x20
+0000a8 b98b                      	out PORTD ,r24
+0000a9 9a5b                      	sbi PORTD ,PD3
+0000aa 0000                      	nop
+0000ab 0000                      	nop
+0000ac 985b                      	cbi PORTD ,PD3
+0000ad ef8a                      	ldi r24 ,250
+0000ae e090                      	ldi r25 ,0
+0000af d00f                      	rcall wait_usec; command to switch to 4 bit mode
+0000b0 e288                      	ldi r24 ,0x28
+0000b1 dfcb                      	rcall lcd_command; 5x8 dots, 2 lines
+0000b2 e08c                      	ldi r24 ,0x0c
+0000b3 dfc9                      	rcall lcd_command
+0000b4 dfce                      	rcall lcd_clear_display
+0000b5 e086                      	ldi r24 ,0x06
+0000b6 dfc6                      	rcall lcd_command
+0000b7 9508                      	ret; }}}
+                                 
+                                 /* wait_msec:
+                                 	push r24 ; 2 cycles
+                                 	push r25 ; 2 cycles
+                                 	ldi r24 , low(999) ; 1 cycle
+                                 	ldi r25 , high(999) ; 1 cycle
+                                 	rcall wait_usec ; 998.375 usec
+                                 	pop r25 ; 2 cycles
+                                 	pop r24 ; 2 cycles
+                                 	nop ; 1 cycle
+                                 	nop ; 1 cycle
+                                 	sbiw r24 , 1 ; 2 cycles
+                                 	brne wait_msec ; 1 or 2 cycles
+                                 	ret ; 4 cycles */
+                                 wait_msec: ; delay of 1000*F1+6 cycles (almost equal to 1000*F1 cycles){{{
                                  ; total delay of next 4 instruction group = 1+(249*4-1) = 996 cycles
-000053 ef79                      	ldi r23, 249			; (1 cycle)
+0000b8 ef79                      	ldi r23, 249			; (1 cycle)
                                  loop_inn:
-000054 957a                      	dec r23					; 1 cycle
-000055 0000                      	nop						; 1 cycle
-000056 f7e9                      	brne loop_inn			; 1 or 2 cycles
+0000b9 957a                      	dec r23					; 1 cycle
+0000ba 0000                      	nop						; 1 cycle
+0000bb f7e9                      	brne loop_inn			; 1 or 2 cycles
                                  
-000057 9701                      	sbiw r24, 1				; 2 cycles
-000058 f7d1                      	brne delay_mS			; 1 or 2 cycles
+0000bc 9701                      	sbiw r24, 1				; 2 cycles
+0000bd f7d1                      	brne wait_msec			; 1 or 2 cycles
                                  
+0000be 9508                      	ret		
+                                 wait_usec:
+0000bf 9701                      	sbiw r24 ,1 ; 2 cycles (2/16 usec)
+0000c0 940e 00c4                 	call delay_8cycles ; 4+8=12 cycles
+0000c2 f7e1                      	brne wait_usec ; 1 or 2 cycles
+0000c3 9508                      	ret
+                                 delay_8cycles:
+0000c4 0000                      	nop
+0000c5 0000                      	nop
+0000c6 0000                      	nop
 
 
 RESOURCE USE INFORMATION
@@ -1729,40 +1904,40 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328PB" register use summary:
-x  :   0 y  :   0 z  :   3 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   0 r0 :   1 r1 :   1 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  27 r17:   2 r18:   0 r19:   5 r20:   3 
-r21:   4 r22:   0 r23:   2 r24:   2 r25:   1 r26:   0 r27:   0 r28:   0 
-r29:   0 r30:   1 r31:   1 
-Registers used: 11 out of 35 (31.4%)
+r13:   0 r14:   0 r15:   0 r16:  23 r17:   0 r18:   1 r19:   1 r20:   0 
+r21:   0 r22:   0 r23:   5 r24:  37 r25:  17 r26:   4 r27:   3 r28:   0 
+r29:   0 r30:   0 r31:   0 
+Registers used: 10 out of 35 (28.6%)
 
 "ATmega328PB" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   1 and   :   1 
-andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   2 brge  :   0 brhc  :   0 
-brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   2 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   1 cls   :   0 
-clt   :   0 clv   :   0 clz   :   0 com   :   2 cp    :   0 cpc   :   0 
-cpi   :   2 cpse  :   0 dec   :   2 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   2 inc   :   1 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  13 lds   :   0 lpm   :   2 lsl   :   0 
-lsr   :   0 mov   :   2 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :   5 pop   :   2 
-push  :   2 rcall :   1 ret   :   1 reti  :   1 rjmp  :   7 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
-sbiw  :   2 sbr   :   0 sbrc  :   2 sbrs  :   0 sec   :   0 seh   :   0 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   2 adiw  :   1 and   :   0 
+andi  :   3 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   1 brmi  :   0 
+brne  :   4 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   1 cbi   :   7 cbr   :   0 
+clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   2 cls   :   0 
+clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
+cpi   :   1 cpse  :   0 dec   :   1 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   1 jmp   :   0 
+ld    :   0 ldd   :   0 ldi   :  32 lds   :   2 lpm   :   0 lsl   :   0 
+lsr   :   0 mov   :   4 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :  16 or    :   0 ori   :   0 out   :  13 pop   :   7 
+push  :   7 rcall :  16 ret   :   9 reti  :   1 rjmp  :   4 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   7 sbic  :   0 sbis  :   0 
+sbiw  :   3 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   1 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   5 
-sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 26 out of 113 (23.0%)
+sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   2 
+sub   :   0 subi  :   0 swap  :   1 tst   :   1 wdr   :   0 
+Instructions used: 30 out of 113 (26.5%)
 
 "ATmega328PB" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000b4    136     26    162   32768   0.5%
+[.cseg] 0x000000 0x000190    318      0    318   32768   1.0%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
-Assembly complete, 0 errors, 0 warnings
+Assembly complete, 0 errors, 4 warnings

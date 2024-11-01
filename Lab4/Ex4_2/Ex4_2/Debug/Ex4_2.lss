@@ -502,7 +502,7 @@ int main(void)
   e4:	00 00       	nop
 	_delay_ms(100);
 	
-	//   Vref = 5V, ADC1, Left adjust
+	//   Vref = 5V, ADC1, Right adjust
 	ADMUX = (1 << REFS0) | (0 << ADLAR) | (1 << MUX0);
   e6:	81 e4       	ldi	r24, 0x41	; 65
   e8:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7f807c>

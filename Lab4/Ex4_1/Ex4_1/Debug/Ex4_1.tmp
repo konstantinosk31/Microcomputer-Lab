@@ -1,0 +1,42 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328PB"</DEVICE>
+ <WORKING_DIR>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\Debug\Ex4_1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Ex4_1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Ex4_1.map</FILE>
+  <FILE>Ex4_1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <reset><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>97</LINE></reset>
+  <adcisr><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>33</LINE></adcisr>
+  <start><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>120</LINE></start>
+  <wait_msec><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>281</LINE></wait_msec>
+  <divide_by10><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>133</LINE></divide_by10>
+  <div_loop><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>140</LINE></div_loop>
+  <div_cont><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>145</LINE></div_cont>
+  <div_done><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>149</LINE></div_done>
+  <write_2_nibbles><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>159</LINE></write_2_nibbles>
+  <lcd_data><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>188</LINE></lcd_data>
+  <wait_usec><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>293</LINE></wait_usec>
+  <lcd_command><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>196</LINE></lcd_command>
+  <lcd_clear_display><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>204</LINE></lcd_clear_display>
+  <lcd_init><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>212</LINE></lcd_init>
+  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>284</LINE></loop_inn>
+  <delay_8cycles><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm</FILE><LINE>298</LINE></delay_8cycles>
+ </LABELS>
+</ASSEMBLER_INFO>

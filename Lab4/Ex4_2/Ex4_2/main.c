@@ -106,7 +106,7 @@ int main(void)
 	lcd_init();
 	_delay_ms(100);
 	
-	//   Vref = 5V, ADC1, Left adjust
+	//   Vref = 5V, ADC1, Right adjust
 	ADMUX = (1 << REFS0) | (0 << ADLAR) | (1 << MUX0);
 	//   Enable, no interrupt, no conversion, 125 kHz
 	ADCSRA = (1 << ADEN) | (0 << ADSC) | (0 << ADIE) | (7 << ADPS0);

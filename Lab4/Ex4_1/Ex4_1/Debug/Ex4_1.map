@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm Fri Nov 01 13:52:51 2024
+AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab4\Ex4_1\Ex4_1\main.asm Fri Nov 01 12:45:57 2024
 
 
 EQU  SIGNATURE_000 0000001e
@@ -1146,19 +1146,35 @@ EQU  TIMER4_COMPAaddr 00000054
 EQU  TIMER4_COMPBaddr 00000056
 EQU  TIMER4_OVFaddr 00000058
 EQU  INT_VECTORS_SIZE 0000005a
-CSEG reset        00000033
-CSEG pc2isr       00000018
-DEF  temp         r16
-DEF  DC_VALUE     r17
-DEF  i            r19
-DEF  prev_PIND    r20
-DEF  cur_PIND     r21
-CSEG DUTY         0000000b
-EQU  DUTY_LAST    0000000c
-EQU  DUTY_START   00000006
-CSEG increase     00000026
-CSEG decrease     0000002b
-CSEG end          0000002f
-CSEG start        0000004c
-CSEG delay_mS     00000053
-CSEG loop_inn     00000054
+CSEG reset        00000036
+CSEG adcisr       0000002b
+DEF  tmp          r16
+DEF  lcd          r17
+DEF  val0         r18
+DEF  val1         r19
+DEF  tmp0         r20
+DEF  tmp1         r21
+DEF  i            r22
+DEF  k            r23
+DEF  argl         r24
+DEF  argh         r25
+DEF  res0         r26
+DEF  res1         r27
+DEF  res2         r28
+DEF  res3         r29
+EQU  PD2          00000002
+EQU  PD3          00000003
+CSEG start        00000045
+CSEG wait_msec    000000b8
+CSEG divide_by10  0000004b
+CSEG div_loop     00000052
+CSEG div_cont     00000056
+CSEG div_done     00000059
+CSEG write_2_nibbles 00000063
+CSEG lcd_data     00000077
+CSEG wait_usec    000000bf
+CSEG lcd_command  0000007d
+CSEG lcd_clear_display 00000083
+CSEG lcd_init     00000089
+CSEG loop_inn     000000b9
+CSEG delay_8cycles 000000c4

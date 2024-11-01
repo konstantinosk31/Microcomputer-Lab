@@ -86,15 +86,23 @@ void lcd_digit(uint8_t digit){
 	lcd_data(0x30 + digit);
 }
 
-void lcd_number(uint8_t number){
+void lcd_number(uint32_t number){
+	uint8_t digits[10];
+	int i = 0;
+	if(number == 0){
+		lcd_digit(0);
+		return;
+	}
 	do{
-		lcd_digit(number%10);
+		digits[i++] = number%10;
 		number /= 10;
-	} while(number >= 10);
+	} while(number > 0);
+	for(; i > 0; ) lcd_digit(digits[--i]);
 }
 
-uint8_t calc_ppm(uint8_t V_gas){
-	uint8_t val = 10000.0/129.0*((double)V_gas - 0.1);
+uint16_t calc_ppm(float V_gas){
+	if(V_gas <= 0.1) return 0;
+	uint16_t val = 10000.0/129.0*(V_gas - 0.1);
 	if(val > 500) return 500;
 	else return val;
 }
@@ -103,6 +111,7 @@ bool interrupted = true;
 
 ISR(TIMER1_COMPA_vect){
 	interrupted = true;
+	return;
 }
 
 void lcd_char(char c){
@@ -119,52 +128,58 @@ void lcd_string(char *s){
 int main(void)
 {
 	DDRD = 0xff; //set PORTD as output
+	DDRB = 0xff; //set PORTB as output
 	lcd_init();
 	_delay_ms(100);
 	
-	//   Vref = 5V, ADC2, Left adjust
-	ADMUX = (1 << REFS0) | (1 << ADLAR) | (1 << MUX1);
+	//   Vref = 5V, ADC2, Right adjust
+	ADMUX = (1 << REFS0) | (0 << ADLAR) | (1 << MUX1);
 	//   Enable, no interrupt, no conversion, 125 kHz
 	ADCSRA = (1 << ADEN) | (0 << ADSC) | (0 << ADIE) | (7 << ADPS0);
 	
 	// Init Timer1
-	TCCR1B |= (1 << WGM12) | (1 << CS12) | (1 << CS10);  // CTC mode, pre-scaler 1024
-	OCR1A = 1562;                                         // Compare value for 100ms: 1562/16000000*1024 = 0.099968 = 100ms
-	TIMSK1 |= (1 << OCIE1A);                              // Enable interrupt
+	TCCR1B |= (1 << WGM12) | (1 << CS12) | (1 << CS10);		// CTC mode, pre-scaler 1024
+	OCR1A = 1562;											// Compare value for 100ms: 1562/16000000*1024 = 0.099968 = 100ms
+	TIMSK1 |= (1 << OCIE1A);								// Enable interrupt
 	
-	uint8_t val, prev_PORTB = 0;	
+	uint8_t prev_PORTB = 0;	
 	sei();
+	
+	uint16_t ppm = 0;
 	
 	while(1)
 	{
-		if(!interrupted){
-			_delay_ms(45);
-			PORTB = 0;
-			_delay_ms(45);
-			PORTB = prev_PORTB;
-			continue;
-		}
+		// flicker
+		_delay_ms(50);
+		if (ppm > 70) PORTB = 0;
+		_delay_ms(50);
+		PORTB = prev_PORTB;
+		
+		if(!interrupted) continue;
 		interrupted = false;
-		lcd_clear_display();
-		_delay_ms(1000);
+		
+		// _delay_ms(1000);
 		ADCSRA |= 1 << ADSC;
 		while (ADCSRA & (1 << ADSC));
-		uint8_t ppm = calc_ppm(ADC);
-		lcd_number(ppm);
+		float V_gas = ADC*5.0/(1<<10);
+		ppm = calc_ppm(V_gas);
+		lcd_clear_display();
 		if(ppm <= 70){
-			PORTB = 0;
-			lcd_string("CLEAR");
-		}
-		else{
-			lcd_string("GAS DETECTED");
-			if(ppm <= 140) PORTB = 1;
-			else if(ppm <= 210) PORTB = 2;
-			else if(ppm <= 280) PORTB = 4;
-			else if(ppm <= 350) PORTB = 8;
-			else if(ppm <= 420) PORTB = 16;
+			PORTB = 1;
+			char str[6] = "CLEAR\0";
+			lcd_string(str);
+		} else {
+			char str[13] = "GAS DETECTED\0";
+			lcd_string(str);
+			if(ppm <= 100) PORTB = 1;
+			else if(ppm <= 200) PORTB = 2;
+			else if(ppm <= 300) PORTB = 4;
+			else if(ppm <= 400) PORTB = 8;
+			else if(ppm <= 500) PORTB = 16;
 			else PORTB = 32;
 			
 		}
 		prev_PORTB = PORTB;
+		// _delay_ms(1000);
 	}
 }

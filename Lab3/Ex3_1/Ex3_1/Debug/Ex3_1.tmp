@@ -22,14 +22,14 @@
   <FILE>Ex3_1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <reset><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>65</LINE></reset>
+  <reset><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>61</LINE></reset>
   <pc2isr><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>26</LINE></pc2isr>
   <DUTY><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>22</LINE></DUTY>
-  <increase><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>48</LINE></increase>
-  <decrease><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>54</LINE></decrease>
-  <end><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>59</LINE></end>
-  <start><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>109</LINE></start>
-  <delay_mS><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>119</LINE></delay_mS>
-  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>122</LINE></loop_inn>
+  <increase><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>44</LINE></increase>
+  <decrease><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>50</LINE></decrease>
+  <end><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>55</LINE></end>
+  <start><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>103</LINE></start>
+  <delay_mS><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>113</LINE></delay_mS>
+  <loop_inn><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab3\Ex3_1\Ex3_1\main.asm</FILE><LINE>116</LINE></loop_inn>
  </LABELS>
 </ASSEMBLER_INFO>
