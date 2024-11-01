@@ -13,14 +13,6 @@
 #include <util/delay.h>
 
 #define NOP() do { __asm__ __volatile__ ( "nop "); } while (0)
-#define PD0 0
-#define PD1 1
-#define PD2 2
-#define PD3 3
-#define PD4 4
-#define PD5 5
-#define PD6 6
-#define PD7 7
 #define V_REF 5
 
 void write_2_nibbles(uint8_t data){
@@ -91,14 +83,21 @@ void lcd_init(){
 }
 
 void lcd_digit(uint8_t digit){
-	lcd_data(0x30 + digit)
+	lcd_data(0x30 + digit);
 }
 
-void lcd_number(uint8_t number){
+void lcd_number(uint32_t number){
+	uint8_t digits[10];
+	int i = 0;
+	if(number == 0){
+		lcd_digit(0);
+		return;
+	}
 	do{
-		lcd_digit(number%10);
+		digits[i++] = number%10;
 		number /= 10;
-	} while(number >= 10);
+	} while(number > 0);
+	for(; i > 0; ) lcd_digit(digits[--i]);
 }
 
 int main(void)
@@ -108,11 +107,11 @@ int main(void)
 	_delay_ms(100);
 	
 	//   Vref = 5V, ADC1, Left adjust
-	ADMUX = (1 << REFS0) | (1 << ADLAR) | (1 << MUX0);
+	ADMUX = (1 << REFS0) | (0 << ADLAR) | (1 << MUX0);
 	//   Enable, no interrupt, no conversion, 125 kHz
 	ADCSRA = (1 << ADEN) | (0 << ADSC) | (0 << ADIE) | (7 << ADPS0);
 	
-	uint8_t val;
+	uint32_t val;
 	
     while(1)
     {
@@ -120,8 +119,10 @@ int main(void)
 		_delay_ms(1000);
 		ADCSRA |= 1 << ADSC;
 		while (ADCSRA & (1 << ADSC));
-		val = (ADC*V_REF)>>10;
-		lcd_number(val);
+		val = (((uint32_t)ADC)*V_REF*100)>>10;
+		lcd_number(val/100);
+		lcd_data('.');
+		lcd_number(val%100);
 		_delay_ms(1000);
     }
 }
