@@ -198,26 +198,17 @@ int main(void) {
 						    //                  4:7 -> input
 
 	// initialize numpad rows
-	twi_start(REG_OUTPUT_0);
-	twi_write(0x01);
-	twi_stop();
-	
+	PCA9555_0_write(REG_OUTPUT_0, 0x00);
+	PCA9555_0_write(REG_OUTPUT_1, 0x0e);
+		
 	while(1)
 	{
-		unsigned int in = twi_readNak(REG_INPUT_1);
-		in >> 5; // remove IO1[0:3] possibly IO1[4]
-		unsigned int out = 1;
-		while (in) {
+		unsigned int in = ~PCA9555_0_read(REG_INPUT_1);
+		in >>= 4; // remove IO1[0:3]
+		unsigned int out = in ? 1 : 0;
+		while (!(in & 1)) {
 			out <<= 1; in >>= 1;
 		}
-		twi_start(REG_OUTPUT_0);
-		twi_write(out);
-		twi_stop();
-		_delay_ms(100);
-
-		// PCA9555_0_write(REG_OUTPUT_0, 0x00);
-		// _delay_ms(1000);
-		// PCA9555_0_write(REG_OUTPUT_0, 0xFF);
-		// _delay_ms(1000);
+		PCA9555_0_write(REG_OUTPUT_0, out);
 	} 
 }

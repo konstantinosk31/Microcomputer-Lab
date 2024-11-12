@@ -174,12 +174,16 @@ void twi_stop(void)
 	while(TWCR0 & (1<<TWSTO));
 }
 
+uint8_t LAST;
+
 void PCA9555_0_write(PCA9555_REGISTERS reg, uint8_t value)
-{
+{	
 	twi_start_wait(PCA9555_0_ADDRESS + TWI_WRITE);
 	twi_write(reg);
 	twi_write(value);
 	twi_stop();
+	LAST = value;
+	//if (reg != REG_CONFIGURATION_0) exit(0);
 }
 
 uint8_t PCA9555_0_read(PCA9555_REGISTERS reg)
@@ -193,60 +197,60 @@ uint8_t PCA9555_0_read(PCA9555_REGISTERS reg)
 	return ret_val;
 }
 
-uint8_t LCD = 0;
+void flash ()
+{
+	_delay_us(50);
+	uint8_t tmp = PCA9555_0_read(REG_INPUT_0);
+	PCA9555_0_write(REG_OUTPUT_0, tmp | (1 << 3));
+	_delay_us(50);
+	PCA9555_0_write(REG_OUTPUT_0, tmp & ~(1 << 3));
+}
 
 void write_2_nibbles(uint8_t data){
-	uint8_t temp = PCA9555_0_read(REG_INPUT_1);
+	uint8_t temp = LAST & 0x0f;
 	uint8_t out = data & 0xf0 | temp;
-	PCA9555_0_write(REG_OUTPUT_1, out);
-
-	PCA9555_0_write(REG_OUTPUT_1, out | (1 << 3));
-	NOP();
-	NOP();
-	PCA9555_0_write(REG_OUTPUT_1, out & ~(1 << 3));
+	PCA9555_0_write(REG_OUTPUT_0, out);
+	flash();
 
 	out = (data << 4) & 0xf0 | temp;
-	PCA9555_0_write(REG_OUTPUT_1, out);
-
-	PCA9555_0_write(REG_OUTPUT_1, out | (1 << 3));
-	NOP();
-	NOP();
-	PCA9555_0_write(REG_OUTPUT_1, out & ~(1 << 3));
+	PCA9555_0_write(REG_OUTPUT_0, out);
+	flash();
 }
 
 void lcd_data (uint8_t data)
 {
-	uint8_t tmp = PCA9555_0_read(REG_INPUT_1);
-	PCA9555_0_write(REG_OUTPUT_1, tmp | (1 << 2));
+	uint8_t tmp = LAST;
+	PCA9555_0_write(REG_OUTPUT_0, tmp | (1 << 2));
 	write_2_nibbles(data);
-	_delay_us(250);
+	_delay_us(500);
 }
 
 void lcd_command (uint8_t instr)
 {
-	uint8_t tmp = PCA9555_0_read(REG_INPUT_1);
-	PCA9555_0_write(REG_OUTPUT_1, tmp & ~(1 << 2));
+	uint8_t tmp = LAST;
+	PCA9555_0_write(REG_OUTPUT_0, tmp & ~(1 << 2));
 	write_2_nibbles(instr);
-	_delay_us(250);
+	_delay_us(500);
 }
 
 void lcd_clear_display(){
 	lcd_command(0x01);
-	_delay_ms(5);
+	_delay_ms(200);
 }
 
 void lcd_init ()
 {
 	_delay_ms(200);
 
+	uint8_t out = 0x30;
 	for (int i=0; i<3; ++i) {
-		PCA9555_0_write(REG_OUTPUT_1, 0x30);
-		PCA9555_0_write(REG_OUTPUT_1, out | (1 << 3));
-		NOP();
-		NOP();
-		PCA9555_0_write(REG_OUTPUT_1, out & ~(1 << 3));
+		PCA9555_0_write(REG_OUTPUT_0, out);
+		flash();
 		_delay_us(250);
 	}
+	PCA9555_0_write(REG_OUTPUT_0, 0x20);
+	flash();
+	_delay_us(250);
 
 	lcd_command(0x28);
 	lcd_command(0x0c);
@@ -256,16 +260,22 @@ void lcd_init ()
 
 void lcd_string (const char* str)
 {
-	for (; *str; str++) lcd_data(*str);
+	lcd_clear_display();
+	for (; *str; str++) {
+		if (*str == '\n')
+			lcd_command(0xc0);
+		else
+			lcd_data(*str);
+	}
 }
 
-const char name[] = "Jim Balatos";
+const char name[] = "Jim Balatos\nKon/nos Krith.";
 
 int main(void) {
+	DDRB = 0xff;
 	twi_init();
-	PCA9555_0_write(REG_CONFIGURATION_1, 0x00); //Set EXT_PORT1 as output
-
+	PCA9555_0_write(REG_CONFIGURATION_0, 0x00); //Set EXT_PORT0 as output
 	lcd_init();
-	lcd_clear_display();
 	lcd_string(name);
+	while (1) {}
 }

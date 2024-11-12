@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>Ex5_1</AssemblyName>
-    <Name>Ex5_1</Name>
-    <RootNamespace>Ex5_1</RootNamespace>
+    <AssemblyName>Ex5_3</AssemblyName>
+    <Name>Ex5_3</Name>
+    <RootNamespace>Ex5_3</RootNamespace>
     <ToolchainFlavour>XC8_2.36</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>

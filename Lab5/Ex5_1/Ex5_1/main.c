@@ -191,16 +191,23 @@ uint8_t PCA9555_0_read(PCA9555_REGISTERS reg)
 	return ret_val;
 }
 
+#include <stdbool.h>
+
 int main(void) {
 	twi_init();
 	PCA9555_0_write(REG_CONFIGURATION_0, 0x00); //Set EXT_PORT0 as output
 	
+	DDRB = 0x00; //Set PORTB as input
+	
+	bool A, B, C, D, F0, F1;
+	
 	while(1)
 	{
-		PCA9555_0_write(REG_OUTPUT_0, 0x00);
-		_delay_ms(1000);
+		uint8_t pins = ~PINB;
+		A = pins&(1<<0); B = pins&(1<<1); C = pins&(1<<2); D = pins&(1<<3);
+		F0 = !((!A && B && C) || (!B && D));
+		F1 = (A || B || C) && (B && !D);
 		
-		PCA9555_0_write(REG_OUTPUT_0, 0xFF);
-		_delay_ms(1000);
+		PCA9555_0_write(REG_OUTPUT_0, F0|(F1<<1));
 	}
 }
