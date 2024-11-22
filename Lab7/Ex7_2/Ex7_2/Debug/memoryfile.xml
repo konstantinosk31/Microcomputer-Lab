@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <project>                                  
-  <executable name="Ex6_1.elf">                 
+  <executable name="Ex7_2.elf">                 
     <memory name="program">              
       <units>bytes</units>                 
       <length>32768</length>                 
-      <used>1038</used>                     
-      <free>31730</free>                     
+      <used>3046</used>                     
+      <free>29722</free>                     
     </memory>                              
     <memory name="data">                 
       <units>bytes</units>                 

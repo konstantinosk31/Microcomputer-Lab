@@ -270,6 +270,7 @@ void correct(){
 	PORTB = 0b00111111;
 	_delay_ms(3000);
 	PORTB = 0;
+	_delay_ms(2000);
 }
 
 void wrong(){
@@ -279,10 +280,6 @@ void wrong(){
 		PORTB = 0;
 		_delay_ms(500);
 	}
-}
-
-void block(){
-	_delay_ms(5000);
 }
 
 void get_code(){
@@ -295,7 +292,6 @@ void get_code(){
 	} while(!(second = keypad_to_ascii())); //read second code digit
 	if(first == '2' && second == '8') correct();
 	else wrong();
-	block();
 }
 
 int main(void) {

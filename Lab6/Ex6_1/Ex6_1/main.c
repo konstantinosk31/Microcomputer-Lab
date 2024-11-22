@@ -226,7 +226,9 @@ uint16_t scan_keypad_rising_edge(){
 }
 
 char keypad_to_ascii(){
-	uint16_t key = scan_keypad_rising_edge();
+	uint16_t key = scan_keypad();
+	_delay_ms(15); //wait to avoid triggering
+	key &= scan_keypad(); //only keep the actual buttons pressed
 	if(key&(1<<0)) return '*';
 	if(key&(1<<1)) return '0';
 	if(key&(1<<2)) return '#';
@@ -262,6 +264,7 @@ void char_to_led(){
 		PORTB = 0x08;
 		break;
 	default:
+		PORTB = 0;
 		break;
 	}
 	return;
