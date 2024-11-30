@@ -28,7 +28,7 @@
         <mxCell id="aZdNWpkULtw_uglptp3B-61" value="Καθυστέρησε 50msec" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.delay;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="470" y="310" width="100" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="aZdNWpkULtw_uglptp3B-64" value="(first = keypad_to_ascii()) != 0" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+        <mxCell id="aZdNWpkULtw_uglptp3B-64" value="(first = keypad_to_ascii()) == 0" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="426.88" y="400" width="186.25" height="120" as="geometry" />
         </mxCell>
         <mxCell id="aZdNWpkULtw_uglptp3B-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="aZdNWpkULtw_uglptp3B-64" target="aZdNWpkULtw_uglptp3B-61">
@@ -54,7 +54,7 @@
         <mxCell id="aZdNWpkULtw_uglptp3B-79" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="aZdNWpkULtw_uglptp3B-74" target="aZdNWpkULtw_uglptp3B-78">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="aZdNWpkULtw_uglptp3B-74" value="(second = keypad_to_ascii()) != 0" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+        <mxCell id="aZdNWpkULtw_uglptp3B-74" value="(second = keypad_to_ascii()) == 0" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="418.44" y="660" width="203.12" height="130" as="geometry" />
         </mxCell>
         <mxCell id="aZdNWpkULtw_uglptp3B-75" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="aZdNWpkULtw_uglptp3B-74" target="aZdNWpkULtw_uglptp3B-73">
