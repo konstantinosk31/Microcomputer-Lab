@@ -1,3 +1,6 @@
+#ifndef __PCA_H__
+#define __PCA_H__
+
 #include "utils.h"
 
 #define PCA9555_0_ADDRESS 0x40 //A0=A1=A2=0 by hardware
@@ -185,3 +188,5 @@ uint8_t PCA9555_0_read(PCA9555_REGISTERS reg)
 	twi_stop();
 	return ret_val;
 }
+
+#endif // __PCA_H__

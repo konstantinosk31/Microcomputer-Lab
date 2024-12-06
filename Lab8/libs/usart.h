@@ -1,4 +1,14 @@
+#ifndef __USART_H__
+#define __USART_H__
+
 #include "utils.h"
+#include "lcd_pex.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+const int BAUD = 9600;
+const int UBRR = 103;
 
 /* Routine: usart_init
 Description: This routine initializes the usart as shown below.
@@ -38,5 +48,111 @@ uint8_t usart_receive(){
   return UDR0;
 }
 
-const int BAUD = 9600;
-const int UBRR = 103;
+void usart_transmit_string(const char *str){
+  while(*str != '\0'){
+    usart_transmit(*str++);
+  }
+}
+
+char* usart_receive_string(){
+  char *str = (char*) malloc(1024*sizeof(char));
+  int i = 0;
+  // lcd_string("");
+  // lcd_data('S'); lcd_data('T'); lcd_data('A');
+  while((str[i++] = usart_receive()) != '\n');
+  // lcd_data('E'); lcd_data('N'); lcd_data('D');
+  str[i] = '\0';
+  return str;
+}
+
+char* create_command(const char *name, const char* value){
+  char *buff = (char*) malloc(64*sizeof(char));
+  strcpy(buff, "{\"name\":\"");
+  strcpy(buff + strlen(buff), name);
+  strcpy(buff + strlen(buff), "\",\"value\":\"");
+  strcpy(buff + strlen(buff), value);
+  strcpy(buff + strlen(buff), "\"}");
+  return buff;
+}
+
+char* create_payload(int argc, char **argv){
+  char *buff = (char*) malloc(312*sizeof(char));
+  strcpy(buff, "ESP:payload:[");
+  for(int i = 0; i < argc; i++){
+	  strcpy(buff + strlen(buff), argv[i]);
+	  strcpy(buff + strlen(buff), (i == argc-1) ? "]\n" : ",");
+  }
+  return buff;
+}
+
+static enum { NO_RESTART, RESTART } usart_state = NO_RESTART;
+
+static int are_same (const char *a, const char *b)
+{
+	while (*a != '\0' && *b != '\0')
+		if (*a != *b) return 1;
+		else a++, b++;
+	return (*a != '\0') || (*a != '\0');
+}
+
+int usart_command(const char *cmd)
+{
+	char *buf = NULL;
+	int ret;
+
+
+	lcd_string(cmd);
+	_delay_ms(500);
+	usart_transmit_string(cmd);
+	buf = usart_receive_string();
+	ret = are_same(buf, "\"Success\"\n");
+	
+	lcd_string(buf);
+	_delay_ms(1000);
+	lcd_clear_display();
+	_delay_ms(1000);
+	free(buf);
+	return ret;
+}
+
+void usart_restart()
+{
+	char *buf;
+	usart_transmit_string("ESP:restart\n");
+	//lcd_string("Just sent");
+	buf = usart_receive_string(); // restart response
+	//lcd_data('[');
+	//lcd_string(buf);
+	//lcd_data(']');
+	free(buf);
+	
+	buf = usart_receive_string(); // restart response
+	//lcd_data('{');
+	//lcd_string(buf);
+	//lcd_data('}');
+	free(buf);
+	
+	usart_state = RESTART;
+}
+
+int usart_connect()
+{
+	//int tmp = -1;
+		//goto connect;
+//
+	//tmp = 1;
+	//if (usart_command("ESP:ssid:\"Micro_IoT\"\n"))
+		//return 1;
+	//if (usart_command("ESP:password:\"Microlab_IoT\"\n"))
+		//return 2;
+	//if (usart_command("ESP:debug:\"false\"\n"))
+		//return 3;
+	//if (usart_command("ESP:baudrate:\"9600\"\n"))
+		//return 4;
+
+	if (usart_command("ESP:connect\n"))
+		return 5;
+	return 0;
+}
+
+#endif // __USART_H__

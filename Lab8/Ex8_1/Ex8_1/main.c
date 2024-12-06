@@ -10,13 +10,30 @@
 
 int main(void)
 {
+	int ret;
+	char buf[30];
+
 	usart_init(UBRR);
-	uint8_t num;
-    while(1)
-    {
-        _delay_ms(1000);
-		num = usart_receive();
-		_delay_ms(1000);
-		usart_transmit(num);
-    }
+	twi_init();
+	PCA9555_0_write(REG_CONFIGURATION_0, 0x00); //Set EXT_PORT0 as output for lcd display
+	lcd_init();
+	
+	// usart_restart();
+	ret = usart_connect();
+	if (ret)
+		snprintf(buf, sizeof(buf), "1.Fail (%d)", ret);
+	else
+		snprintf(buf, sizeof(buf), "1.Success");
+	lcd_string(buf);
+	
+	_delay_s(5);
+
+	if (usart_command("ESP:url:\"http://192.168.1.250:5000/data\""))
+		snprintf(buf, sizeof(buf), "2.Fail (%d)", ret);
+	else
+		snprintf(buf, sizeof(buf), "2.Success");
+	lcd_string(buf);
+
+	while (1);
+	
 }

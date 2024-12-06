@@ -1,4 +1,16 @@
+#ifndef __LCD_H__
+#define __LCD_H__
+
 #include "pca9555.h"
+
+void flash ()
+{
+	_delay_us(50);
+	uint8_t tmp = PCA9555_0_read(REG_INPUT_0);
+	PCA9555_0_write(REG_OUTPUT_0, tmp | (1 << 3));
+	_delay_us(50);
+	PCA9555_0_write(REG_OUTPUT_0, tmp & ~(1 << 3));
+}
 
 void write_2_nibbles(uint8_t data){
 	uint8_t temp = LAST & 0x0f;
@@ -55,10 +67,45 @@ void lcd_init ()
 void lcd_string (const char* str)
 {
 	lcd_clear_display();
-	for (; *str; str++) {
+	for (; *str != '\0'; str++) {
 		if (*str == '\n')
 			lcd_command(0xc0);
 		else
 			lcd_data(*str);
 	}
 }
+
+void lcd_temp (int16_t val, int decimals)
+{
+	char tmp[17];
+	int idx = 0;
+	lcd_command(0x02);
+
+	if (val < 0) {
+		lcd_data('-');
+		val = -val;
+	}
+
+	int   int_part  = val >> PRECISION;
+	float frac_part =  ((float)(val) / (1 << PRECISION)) - int_part;
+
+	if (int_part) {
+		for (; int_part; int_part /= 10)
+			tmp[idx++] = (int_part % 10) + '0';
+		for (idx -= 1; idx >= 0; --idx)
+			lcd_data(tmp[idx]);
+	} else {
+		lcd_data('0');
+	}
+
+	lcd_data('.');
+	for (int i=0; i<decimals; ++i) {
+		frac_part *= 10;
+		lcd_data((int)(frac_part) + '0');
+		frac_part -= (int)(frac_part);
+	}
+
+	lcd_data(0b11011111); lcd_data('c');
+}
+
+#endif // _LCD_H__
