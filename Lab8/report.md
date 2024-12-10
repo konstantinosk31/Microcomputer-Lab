@@ -97,7 +97,8 @@ status είναι σε μορφή έτοιμη ώστε με τις `create_comm
 
 - `create_command(key, value)`{.c}: κατασκευάζει ένα JSON ζευγάρι key-value (σε 
   string)
-- `create_json(argc, argv)`{.c}: ενώνει τα ζευγάρια σε ένα JSON αντικείμενο
+- `create_payload(argc, argv)`{.c}: ενώνει τα ζευγάρια σε ένα JSON αντικείμενο 
+  και προσθέτει το πρόθεμα `"ESP:payload"`{.c}.
 
 Για αποφυγή προβλημάτων, επανασυνδεόμαστε στον server μέσω UART, ετοιμάζουμε το 
 πακέτο μέσω εντολής `payload` και μετά το στέλνουμε μέσω της `transmit`

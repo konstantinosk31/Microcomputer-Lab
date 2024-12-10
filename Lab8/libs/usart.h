@@ -1,8 +1,6 @@
 #ifndef __USART_H__
 #define __USART_H__
 
-#include "utils.h"
-#include "lcd_pex.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -57,10 +55,7 @@ void usart_transmit_string(const char *str){
 char* usart_receive_string(){
   char *str = (char*) malloc(1024*sizeof(char));
   int i = 0;
-  // lcd_string("");
-  // lcd_data('S'); lcd_data('T'); lcd_data('A');
   while((str[i++] = usart_receive()) != '\n');
-  // lcd_data('E'); lcd_data('N'); lcd_data('D');
   str[i] = '\0';
   return str;
 }
@@ -101,16 +96,11 @@ int usart_command(const char *cmd)
 	int ret;
 
 
-	lcd_string(cmd);
 	_delay_ms(500);
 	usart_transmit_string(cmd);
 	buf = usart_receive_string();
 	ret = are_same(buf, "\"Success\"\n");
 	
-	lcd_string(buf);
-	_delay_ms(1000);
-	lcd_clear_display();
-	_delay_ms(1000);
 	free(buf);
 	return ret;
 }
@@ -119,17 +109,10 @@ void usart_restart()
 {
 	char *buf;
 	usart_transmit_string("ESP:restart\n");
-	//lcd_string("Just sent");
 	buf = usart_receive_string(); // restart response
-	//lcd_data('[');
-	//lcd_string(buf);
-	//lcd_data(']');
 	free(buf);
 	
 	buf = usart_receive_string(); // restart response
-	//lcd_data('{');
-	//lcd_string(buf);
-	//lcd_data('}');
 	free(buf);
 	
 	usart_state = RESTART;

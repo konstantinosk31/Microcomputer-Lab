@@ -1,8 +1,6 @@
 #ifndef __PCA_H__
 #define __PCA_H__
 
-#include "utils.h"
-
 #define PCA9555_0_ADDRESS 0x40 //A0=A1=A2=0 by hardware
 #define TWI_READ 1 // reading from twi device
 #define TWI_WRITE 0 // writing to twi device

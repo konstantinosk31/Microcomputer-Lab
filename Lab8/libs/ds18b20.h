@@ -79,9 +79,7 @@ int16_t read_temp (void)
 	if (one_wire_reset() != 1) return TEMP_ERR;
 	one_wire_transmit_byte(0xCC);
 	one_wire_transmit_byte(0x44);
-	// lcd_string("Waiting...");
 	while (one_wire_receive_bit() != 1);
-	// lcd_string("Finished!");
 
 	if (one_wire_reset() != 1) return TEMP_ERR;
 	one_wire_transmit_byte(0xCC);

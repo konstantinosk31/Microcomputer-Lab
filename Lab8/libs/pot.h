@@ -1,8 +1,6 @@
 #ifndef __POT_H__
 #define __POT_H__
 
-#include "utils.h"
-
 void pot_init(){
 	// Fast PWM, 8 bit, non-inverting output, N = 256. BOTTOM = 0, TOP = 0x00ff = 255
 	TCCR1A = (1<<WGM10) | (1<<COM1A1);
