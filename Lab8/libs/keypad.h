@@ -1,3 +1,6 @@
+#ifndef __PCA_H__
+#define __PCA_H__
+
 #include "pca9555.h"
 
 uint8_t scan_row(uint8_t row){ //row = 0, 1, 2, 3
@@ -47,3 +50,5 @@ char keypad_to_ascii(){
 	if(key&(1<<15)) return 'A';
 	return 0;
 }
+
+#endif //__PCA_H__

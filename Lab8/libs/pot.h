@@ -1,3 +1,6 @@
+#ifndef __POT_H__
+#define __POT_H__
+
 #include "utils.h"
 
 void pot_init(){
@@ -40,3 +43,5 @@ char* pressure_to_str(int8_t pressure){
 	}
 	return buff;
 }
+
+#endif //__POT_H__

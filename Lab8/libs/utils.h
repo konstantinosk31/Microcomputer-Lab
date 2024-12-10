@@ -1,3 +1,6 @@
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
 #include <xc.h>
 
 #define F_CPU 16000000UL
@@ -6,3 +9,5 @@
 #include<util/delay.h>
 #include <inttypes.h>
 #include <stdbool.h>
+
+#endif // __UTILS_H__
