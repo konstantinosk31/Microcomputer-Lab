@@ -20,6 +20,8 @@ int main(void)
 	twi_init();
 	PCA9555_0_write(REG_CONFIGURATION_0, 0x00); //Set EXT_PORT0 as output for lcd display
 	lcd_init();
+    one_wire_reset();
+	pot_init();
 	
 	// usart_restart();
 	ret = usart_connect();
@@ -29,7 +31,7 @@ int main(void)
 		snprintf(buf, sizeof(buf), "1.Success");
 	lcd_string(buf);
 	
-	_delay_s(5);
+	_delay_ms(5000);
 
 	if (usart_command("ESP:url:\"http://192.168.1.250:5000/data\""))
 		snprintf(buf, sizeof(buf), "2.Fail (%d)", ret);
@@ -37,7 +39,7 @@ int main(void)
 		snprintf(buf, sizeof(buf), "2.Success");
 	lcd_string(buf);
 
-    _delay_s(5);
+    _delay_ms(5000);
 
     int16_t raw_temp;
     int8_t pressure;
@@ -47,6 +49,7 @@ int main(void)
 
     while (1) {
         raw_temp  = read_temp();
+        if (raw_temp == TEMP_ERR) raw_temp = 0;
         add_to_temp(&raw_temp, 10);
         pressure = read_pressure();
         keypad = keypad_to_ascii();
@@ -59,11 +62,21 @@ int main(void)
             sprintf(status, "CHECK PRESSURE");
         else if (TEMP(raw_temp) < 34 || 37 < TEMP(raw_temp))
             sprintf(status, "CHECK TEMP");
+        else if (strcmp(status, "NURSE CALL"))
+			sprintf(status, "OK");
 
         char* pressure_str = pressure_to_str(pressure);
-        snprintf(buf, sizeof(buf), "T: %s, P: %d\n%s", temp_to_str(raw_temp, 1), pressure, status);
-
-        _delay_s(5);
+        char* temp_str = temp_to_str(raw_temp, 1);
+		
+		strcpy(buf, "T: ");
+		strcpy(buf + strlen(buf), temp_str);
+		strcpy(buf + strlen(buf), " P: ");
+		strcpy(buf + strlen(buf), pressure_str);
+		strcpy(buf + strlen(buf), "\n");
+		strcpy(buf + strlen(buf), status);
+		
+		lcd_string(buf);
+		_delay_ms(1000);
     }
 	
 }

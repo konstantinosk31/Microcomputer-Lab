@@ -6,8 +6,8 @@ void pot_init(){
 	TCCR1B = (1<<WGM12) | (1<<CS12);
 
 	// Init ADC:
-	//   Vref = 5V, ADC1
-	ADMUX = (1 << REFS0) | (1 << MUX0);
+	//   Vref = 5V, ADC0
+	ADMUX = (1 << REFS0);
 	//   Enable, no interrupt, no conversion, 125 kHz
 	ADCSRA = (1 << ADEN) | (0 << ADSC) | (0 << ADIE) | (7 << ADPS0);
 }

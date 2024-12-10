@@ -26,7 +26,7 @@ int main(void)
 		snprintf(buf, sizeof(buf), "1.Success");
 	lcd_string(buf);
 	
-	_delay_s(5);
+	_delay_ms(5000);
 
 	if (usart_command("ESP:url:\"http://192.168.1.250:5000/data\""))
 		snprintf(buf, sizeof(buf), "2.Fail (%d)", ret);
