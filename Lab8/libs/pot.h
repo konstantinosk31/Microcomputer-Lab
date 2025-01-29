@@ -8,7 +8,7 @@ void pot_init(){
 
 	// Init ADC:
 	//   Vref = 5V, ADC0
-	ADMUX = (1 << REFS0);
+	ADMUX = (1 << REFS0) | (1 << ADLAR) | (0 << MUX0);
 	//   Enable, no interrupt, no conversion, 125 kHz
 	ADCSRA = (1 << ADEN) | (0 << ADSC) | (0 << ADIE) | (7 << ADPS0);
 }
@@ -17,16 +17,16 @@ int16_t read_pot(){
 	// Handle ADC
 	ADCSRA |= (1 << ADSC);
 	while (ADCSRA & (1 << ADSC));
-	return ADC & ((1 << 10) - 1);
+	return 255 - ADCH;
 }
 
 int8_t read_pressure(){
 	int16_t pressure = read_pot();
-	return pressure/(1<<10)*20;
+	return (pressure * 20) >> 8;
 }
 
 char* pressure_to_str(int8_t pressure){
-	char *buff = (char*) malloc(1024*sizeof(char));
+	char *buff = (char*) malloc(64*sizeof(char));
 	char num[5];
 	int pos = 0, idx = 0;
 	

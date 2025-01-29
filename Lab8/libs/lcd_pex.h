@@ -72,7 +72,7 @@ void lcd_string (const char* str)
 			lcd_command(0xc0);
 		else
 			lcd_data(*str);
-	}
+		}
 }
 
 void lcd_temp (int16_t val, int decimals)

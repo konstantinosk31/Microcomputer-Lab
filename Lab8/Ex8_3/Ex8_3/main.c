@@ -7,11 +7,11 @@
 
 #define PRECISION 4 // binary precision bits
 
-#include "../../libs/usart.h"
 #include "../../libs/ds18b20.h"
 #include "../../libs/lcd_pex.h"
 #include "../../libs/keypad.h"
 #include "../../libs/pot.h"
+#include "../../libs/usart.h"
 
 int main(void)
 {
@@ -21,6 +21,7 @@ int main(void)
 	usart_init(UBRR);
 	twi_init();
 	PCA9555_0_write(REG_CONFIGURATION_0, 0x00); //Set EXT_PORT0 as output for lcd display
+	PCA9555_0_write(REG_CONFIGURATION_1, 0xf0);
 	lcd_init();
 	one_wire_reset();
 	pot_init();
@@ -34,10 +35,10 @@ int main(void)
     while (1) {
         raw_temp  = read_temp();
 		if (raw_temp == TEMP_ERR) raw_temp = 0;
-        add_to_temp(&raw_temp, 10);
+        add_to_temp(&raw_temp, 13);
         pressure = read_pressure();
         keypad = keypad_to_ascii();
-
+		
         if (keypad == '8')
             sprintf(status, "NURSE CALL");
         else if (keypad == '#' && !strcmp(status, "NURSE CALL"))
@@ -60,36 +61,33 @@ int main(void)
 		strcpy(buf + strlen(buf), status);
 		
 		lcd_string(buf);
-		_delay_ms(1000);
+		//_delay_ms(500);
 
 		char* json[4] = {
 			create_command("temperature", temp_str), create_command("pressure", pressure_str),
 			create_command("team", "28")           , create_command("status", status)
 		};
-		lcd_string(json[0]);
-		_delay_ms(1000);
+		/*lcd_string(json[0]);
+		_delay_ms(1000);*/
 		char* cmd = create_payload(4, json);
-		lcd_string(cmd);
-		_delay_ms(2000);
+		//lcd_string(cmd);
+		//_delay_ms(2000);
 		
-		//usart_restart();
+		// usart_restart();
 		ret = usart_connect();
 		if (ret)
-		snprintf(buf, 60, "1.Fail (%d)", ret);
+			strcpy(buf, "1.Fail");
 		else
-		snprintf(buf, 60, "1.Success");
-		lcd_string(buf);
+			strcpy(buf, "1.Success");
 		
-		_delay_ms(1000);
-		
-		lcd_string("Moving on");
-		if (usart_command("ESP:url:\"http://192.168.1.250:5000/data\"\n"))
-		snprintf(buf, 60, "2.Fail (%d)", ret);
+		//lcd_string("Moving on");
+		ret = usart_command("ESP:url:\"http://192.168.1.250:5000/data\"\n");
+		if (ret)
+			strcpy(buf + strlen(buf), "\n2.Fail");
 		else
-		snprintf(buf, 60, "2.Success");
+			strcpy(buf + strlen(buf), "\n2.Success");
 		lcd_string(buf);
-
-		_delay_ms(1000);
+		//_delay_ms(500);
 
 		usart_command(cmd);
 		usart_command("ESP:transmit\n");
@@ -99,7 +97,7 @@ int main(void)
         free(cmd);
 		for (int i=0; i<4; ++i) free(json[i]);
 
-        _delay_ms(1000);
+        //_delay_ms(1000);
     }
 	
 }

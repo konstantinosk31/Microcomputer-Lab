@@ -3,6 +3,11 @@
 
 #include "pca9555.h"
 
+#endif
+
+#ifndef __KEYPAD_H__
+#define __KEYPAD_H__
+
 uint8_t scan_row(uint8_t row){ //row = 0, 1, 2, 3
 	uint8_t mask = 0x0f & ~(1<<row);
 	PCA9555_0_write(REG_OUTPUT_1, mask); //enable row as input
@@ -21,17 +26,18 @@ uint16_t scan_keypad(){
 }
 
 uint16_t scan_keypad_rising_edge(){
-	static uint16_t pressed_keys = 0;
+	//static uint16_t pressed_keys = 0;
 	uint16_t pressed_keys_tempo = scan_keypad();
 	_delay_ms(15); //wait to avoid triggering
 	pressed_keys_tempo &= scan_keypad(); //only keep the actual buttons pressed
-	uint16_t keys_just_pressed = pressed_keys_tempo & (~pressed_keys);
-	pressed_keys = pressed_keys_tempo;
-	return keys_just_pressed;
+	return pressed_keys_tempo;
+	//uint16_t keys_just_pressed = pressed_keys_tempo & (~pressed_keys);
+	//pressed_keys = pressed_keys_tempo;
+	//return keys_just_pressed;
 }
 
 char keypad_to_ascii(){
-	uint16_t key = scan_keypad_rising_edge();
+	uint16_t key = scan_keypad();
 	if(key&(1<<0)) return '*';
 	if(key&(1<<1)) return '0';
 	if(key&(1<<2)) return '#';
@@ -51,4 +57,4 @@ char keypad_to_ascii(){
 	return 0;
 }
 
-#endif //__PCA_H__
+#endif //__KEYPAD_H__

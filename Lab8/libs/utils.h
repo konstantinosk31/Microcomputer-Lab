@@ -9,5 +9,7 @@
 #include<util/delay.h>
 #include <inttypes.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 #endif // __UTILS_H__

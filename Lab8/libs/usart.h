@@ -1,7 +1,6 @@
 #ifndef __USART_H__
 #define __USART_H__
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -53,10 +52,11 @@ void usart_transmit_string(const char *str){
 }
 
 char* usart_receive_string(){
-  char *str = (char*) malloc(1024*sizeof(char));
+  char *str = (char*) malloc(64*sizeof(char));
   int i = 0;
-  while((str[i++] = usart_receive()) != '\n');
+  while((str[i] = usart_receive()) != '\n') i++;// lcd_data(str[i-1]);
   str[i] = '\0';
+  //_delay_ms(1000);
   return str;
 }
 
@@ -96,10 +96,15 @@ int usart_command(const char *cmd)
 	int ret;
 
 
-	_delay_ms(500);
+	//_delay_ms(500);
 	usart_transmit_string(cmd);
 	buf = usart_receive_string();
+	//lcd_string("Received");
 	ret = are_same(buf, "\"Success\"\n");
+	//lcd_string("Received buffer:");
+	//_delay_ms(1000);
+	//lcd_string(buf);
+	//_delay_ms(1000);
 	
 	free(buf);
 	return ret;
@@ -107,6 +112,8 @@ int usart_command(const char *cmd)
 
 void usart_restart()
 {
+	//lcd_string("Started restarting");
+	//_delay_ms(1000);
 	char *buf;
 	usart_transmit_string("ESP:restart\n");
 	buf = usart_receive_string(); // restart response
@@ -116,10 +123,14 @@ void usart_restart()
 	free(buf);
 	
 	usart_state = RESTART;
+	//lcd_string("Finished restarting");
+	//_delay_ms(2000);
 }
 
 int usart_connect()
 {
+	//lcd_string("Started connect");
+	//_delay_ms(1000);
 	//int tmp = -1;
 		//goto connect;
 //
@@ -132,7 +143,6 @@ int usart_connect()
 		//return 3;
 	//if (usart_command("ESP:baudrate:\"9600\"\n"))
 		//return 4;
-
 	if (usart_command("ESP:connect\n"))
 		return 5;
 	return 0;
