@@ -12,8 +12,7 @@
 .def il=r26
 .def ih=r27
 
-.equ Delay_ms=65535
-
+.equ Delay_ms=200
 ; Replace with your application code
 init:
 	ldi r26, LOW(RAMEND)

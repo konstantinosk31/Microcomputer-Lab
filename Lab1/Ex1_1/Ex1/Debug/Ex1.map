@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm Tue Oct 15 21:55:25 2024
+AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm Fri Dec 13 12:39:42 2024
 
 
 EQU  SIGNATURE_000 0000001e
@@ -1150,7 +1150,7 @@ DEF  msl          r24
 DEF  msh          r25
 DEF  il           r26
 DEF  ih           r27
-EQU  Delay_ms     0000ffff
+EQU  Delay_ms     000000c8
 CSEG init         00000000
 CSEG wait_x_msec  00000006
 CSEG delay1       00000008

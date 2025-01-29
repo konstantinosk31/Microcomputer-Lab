@@ -22,9 +22,9 @@
   <FILE>Ex1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <init><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>18</LINE></init>
-  <wait_x_msec><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>26</LINE></wait_x_msec>
-  <delay1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>29</LINE></delay1>
+  <init><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>17</LINE></init>
+  <wait_x_msec><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>25</LINE></wait_x_msec>
+  <delay1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>28</LINE></delay1>
   <wait_approx_1_msec><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>52</LINE></wait_approx_1_msec>
   <label1><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>33</LINE></label1>
   <label2><FILE>C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm</FILE><LINE>35</LINE></label2>

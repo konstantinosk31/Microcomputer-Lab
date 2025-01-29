@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm Tue Oct 15 21:55:25 2024
+AVRASM ver. 2.2.8  C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm Fri Dec 13 12:39:42 2024
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
 C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm(8): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328PBdef.inc'
@@ -1593,8 +1593,7 @@ C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm(8): Inc
                                  .def il=r26
                                  .def ih=r27
                                  
-                                 .equ Delay_ms=65535
-                                 
+                                 .equ Delay_ms=200
                                  ; Replace with your application code
                                  init:
 000000 efaf                      	ldi r26, LOW(RAMEND)
@@ -1605,10 +1604,11 @@ C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm(8): Inc
 000005 0000                      	nop
                                  
                                  wait_x_msec: ; Delay_ms*16000 +2-9+4 + 3 overhead = Delay_ms*16000
-000006 ef8f                      	ldi msl, LOW(Delay_ms) ; 1 cycle
-000007 ef9f                      	ldi msh, HIGH(Delay_ms) ; 1 cycle
+000006 ec88                      	ldi msl, LOW(Delay_ms) ; 1 cycle
+000007 e090                      	ldi msh, HIGH(Delay_ms) ; 1 cycle
                                  delay1: ; Delay_ms*16000 - 9
-000008 d00b                      	rcall wait_approx_1_msec ; 15980 cycles = 15977 cycles + 3 cycles overhead
+000008 d00b                      	rcall wait_approx_1_msec ; 15980 cycles = 15977 cycles
+                                 	                         ;                + 3 cycles overhead
 000009 9701                      	sbiw msl, 1 ; 2 cycles
 00000a f401                      	brne label1 ; 2 or 1 cycles
                                  label1:
@@ -1640,6 +1640,7 @@ C:\Users\User\Documents\GitHub\Microcomputer-Lab\Lab1\Ex1_1\Ex1\main.asm(8): Inc
 000019 f7f1                      	brne loop ; 2 or 1 cycle
 00001a 91bf                      	pop ih ; 2 cycles
 00001b 91af                      	pop il ; 2 cycles
+00001c 9508                      	ret ; 4 cycles
 
 
 RESOURCE USE INFORMATION
